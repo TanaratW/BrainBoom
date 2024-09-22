@@ -245,31 +245,29 @@ async function GetCourseById(id: number) {
   return res;
 }
 
-async function GetCourseByCategoryID(categoryID: number): Promise<CourseInterface[]> {
+async function GetCourseByCategoryID(id: number): Promise<CourseInterface[]> {
+  const requestOptions = {
+    method: "GET",
+  };
+
   try {
-    const response = await fetch(`${apiUrl}/courses/${categoryID}`);
+    const res = await fetch(`${apiUrl}/courses/category/${id}`, requestOptions);
 
-    if (!response.ok) {
-      throw new Error(`Network response was not ok: ${response.statusText}`);
-    }
-
-    const contentType = response.headers.get("Content-Type");
-    if (contentType && contentType.includes("application/json")) {
-      const data = await response.json();
-
+    if (res.ok) {
+      const data = await res.json();
       if (Array.isArray(data)) {
-        return data; 
+        return data;
       } else {
-        throw new Error("Received data is not an array");
+        return [];
       }
     } else {
-      throw new Error("Response is not JSON");
+      return []; 
     }
-  } catch (error) {
-    console.error("Error fetching courses:", error);
-    throw error;
+  } catch {
+    return [];
   }
 }
+
 
 
 async function GetCourseByTutorID(tutorID: number) {

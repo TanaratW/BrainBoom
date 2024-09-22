@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import HeaderComponent from "../../../components/header";
 import { GetCourses, SearchCourseByKeyword, GetCourseCategories, GetCourseByCategoryID } from "../../../services/https";
 import { CourseInterface } from "../../../interfaces/ICourse";
-import { CourseCategoryInterface } from "../../../interfaces/ICourse_Category"
+import { CourseCategoryInterface } from "../../../interfaces/ICourse_Category";
 
 const { Meta } = Card;
 const { Search } = Input;
@@ -14,10 +14,10 @@ function SearchCourse() {
   const [courses, setCourses] = useState<CourseInterface[]>([]);
   const [categories, setCategories] = useState<CourseCategoryInterface[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
+  //const [error, setError] = useState<string | null>(null);
 
   const navigate = useNavigate();
-  const [categoryID, setCategoryID] = useState<number>();
+  const [categoryID, setCategoryID] = useState<number | undefined>();
 
   const handleCourseClick = (course: CourseInterface) => {
     navigate(`/course/${course.ID}`, { state: { course } });
@@ -26,13 +26,14 @@ function SearchCourse() {
   const getCourses = async () => {
     try {
       const course = await GetCourses();
-      if (course) {
+      if (course && Array.isArray(course)) {
         setCourses(course);
       } else {
-        console.log("No courses found");
+        throw new Error("No courses found");
       }
-    } catch {
-      console.log("Failed to fetch courses");
+    } catch (error) {
+      console.error("Failed to fetch courses:", error);
+      message.error("ไม่สามารถดึงข้อมูลคอร์สได้");
     } finally {
       setLoading(false);
     }
@@ -49,16 +50,19 @@ function SearchCourse() {
     }
   };
 
-  const getCoursesByCategory = async (categoryId: number) => {
+  const getCoursesByCategory = async (categoryId: number): Promise<CourseInterface[]> => {
     try {
       const coursesByCategory = await GetCourseByCategoryID(categoryId);
-      if (coursesByCategory) {
-        setCourses(coursesByCategory);
+      if (Array.isArray(coursesByCategory)) {
+        return coursesByCategory;
+      } else {
+        throw new Error("No courses found for this category");
       }
     } catch {
-      setError("Failed to fetch courses by category");
+      throw new Error("Failed to fetch courses by category");
     }
   };
+  
 
   useEffect(() => {
     getCourses();
@@ -69,10 +73,12 @@ function SearchCourse() {
     if (categoryID === undefined) {
       getCourses();
     } else {
-      getCoursesByCategory(categoryID);
+      getCoursesByCategory(categoryID).then(setCourses).catch((err) => {
+        console.error(err);
+        message.error("ไม่สามารถดึงข้อมูลคอร์สตามหมวดหมู่ได้");
+      });
     }
   }, [categoryID]);
-  
 
   const handleSearch = async (value: string) => {
     try {
@@ -80,7 +86,6 @@ function SearchCourse() {
         await getCourses();
       } else {
         const searchResults = await SearchCourseByKeyword(value);
-
         if (searchResults && Array.isArray(searchResults)) {
           setCourses(searchResults);
         } else {
@@ -93,31 +98,31 @@ function SearchCourse() {
   };
 
   const handleCategoryChange = async (value: number | undefined) => {
-    console.log(value);
-    
     setCategoryID(value);
-    if (value === undefined) {
-      const course = await GetCourses();
-      setCourses(course);
+    if (value === undefined || value === 0) {
+      await getCourses();
     } else {
-      const course = await GetCourseByCategoryID(value);
-      setCourses(course);
+      try {
+        const courses = await getCoursesByCategory(value);
+        setCourses(courses);
+      } catch {
+        message.error("ไม่สามารถดึงข้อมูลคอร์สตามหมวดหมู่ได้");
+      }
     }
   };
   
 
   if (loading) return <p>Loading...</p>;
-  if (error) return <p>{error}</p>;
 
   return (
     <>
       <HeaderComponent />
       <section style={{ padding: "100px 50px 30px 50px" }}>
         <Space direction="vertical" size="large" style={{ width: "100%" }}>
-          <div 
-            style = {{
+          <div
+            style={{
               display: "flex",
-              flexDirection:"row",
+              flexDirection: "row",
               justifyContent: "space-between",
               width: "100%",
             }}
@@ -127,7 +132,7 @@ function SearchCourse() {
               onChange={handleCategoryChange}
               style={{ width: '25%', marginBottom: '10px' }}
             >
-              <Select.Option value={undefined}>เลือกหมวดหมู่</Select.Option>
+              <Select.Option value={0}>เลือกหมวดหมู่</Select.Option>
               {categories.map((category) => (
                 <Select.Option key={category.ID} value={category.ID}>
                   {category.CategoryName}
@@ -181,7 +186,6 @@ function SearchCourse() {
                       backgroundColor: "#fff",
                       border: "1px solid #ddd",
                     }}
-                    styles={{body:{ padding: "10px" }}}
                   >
                     <Meta
                       title={course.Title}
