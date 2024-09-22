@@ -54,12 +54,13 @@ input[type=radio] {
     font-family: 'Times New Roman', Times, serif;
     border-radius: 15px;
 }
+
 .product-review {
     display: flex;
-    margin-left: 30px;
+    flex-direction: column; /* Arrange items vertically */
     justify-content: center;
     align-items: center;
-    width: 280px;
+    width: 280px; /* Fixed width */
     height: 350px;
     border-radius: 20px;
     overflow: hidden;
@@ -71,16 +72,18 @@ input[type=radio] {
     width: 75%;
     height: 600px;
     display: flex;
-    gap: 0;
+    flex-wrap: wrap; /* Allow wrapping to next line */
+    gap: 20px; /* Adjust gap between items */
     place-items: center;
     justify-content: center;
     margin-left: 20vh;
     margin-top: 20px;
     border-color: #d9e0e6; 
     border-width: 1px; 
-    border-style: solid; /* ประเภทของเส้นขอบ */
-    border-radius: 20px; /* มุมโค้งของกรอบ */
-    overflow-y: auto;
+    border-style: solid; 
+    border-radius: 20px; 
+    overflow-y: auto; /* Enable vertical scrollbar */
+    padding: 20px; /* Add some padding */
 }
 
 .product-review img {
