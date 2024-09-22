@@ -29,10 +29,10 @@ function SearchCourse() {
       if (course) {
         setCourses(course);
       } else {
-        setError("No courses found");
+        console.log("No courses found");
       }
     } catch {
-      setError("Failed to fetch courses");
+      console.log("Failed to fetch courses");
     } finally {
       setLoading(false);
     }
@@ -93,6 +93,8 @@ function SearchCourse() {
   };
 
   const handleCategoryChange = async (value: number | undefined) => {
+    console.log(value);
+    
     setCategoryID(value);
     if (value === undefined) {
       const course = await GetCourses();

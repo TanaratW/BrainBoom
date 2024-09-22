@@ -245,22 +245,32 @@ async function GetCourseById(id: number) {
   return res;
 }
 
-async function GetCourseByCategoryID(categoryID: number) {
+async function GetCourseByCategoryID(categoryID: number): Promise<CourseInterface[]> {
   try {
-    const response = await fetch(`/courses/category/${categoryID}`);
-    if (!response.ok) throw new Error("การตอบสนองของเครือข่ายไม่ถูกต้อง");
+    const response = await fetch(`${apiUrl}/courses/${categoryID}`);
 
-    const contentType = response.headers.get("content-type");
+    if (!response.ok) {
+      throw new Error(`Network response was not ok: ${response.statusText}`);
+    }
+
+    const contentType = response.headers.get("Content-Type");
     if (contentType && contentType.includes("application/json")) {
-      return await response.json();
+      const data = await response.json();
+
+      if (Array.isArray(data)) {
+        return data; 
+      } else {
+        throw new Error("Received data is not an array");
+      }
     } else {
-      throw new Error("การตอบสนองไม่ใช่ JSON");
+      throw new Error("Response is not JSON");
     }
   } catch (error) {
-    console.error("ข้อผิดพลาดในการดึงข้อมูลคอร์ส:", error);
-    return false;
+    console.error("Error fetching courses:", error);
+    throw error;
   }
 }
+
 
 async function GetCourseByTutorID(tutorID: number) {
   try {
