@@ -21,15 +21,16 @@ function CourseDetail() {
   const formattedTime = moment(updatedAt).format('HH:mm');
 
   const showModal = () => {
-    setIsModalVisible(true); // เปิด Modal
+      setIsModalVisible(true);
   };
 
-  // ฟังก์ชันสำหรับปิด Modal
-  const handleCancel = () => {
-    setIsModalVisible(false); // ปิด Modal
+  
+  const handleCourseClick = () => {
+    navigate(`/payment`, { state: { course } });
   };
 
-  // Your existing code with course data rendering
+  const handleCancel = () => {setIsModalVisible(false);};
+
   return (
     <>
       <HeaderComponent />
@@ -116,6 +117,7 @@ function CourseDetail() {
               >
                 {course.Price?.toFixed(2) || "0.00"} Bath
               </Text>
+              <div key={course.ID} onClick={() => handleCourseClick()}>
               <Button
                 type="primary"
                 style={{
@@ -125,7 +127,7 @@ function CourseDetail() {
                   borderColor: '#003459',
                   transition: 'background-color 0.3s, border-color 0.3s',
                 }}
-                onClick={() => navigate('/payment')}
+                //onClick={() => navigate('/payment')}
                 onMouseEnter={(e) => {
                   e.currentTarget.style.backgroundColor = '#002a3d';
                   e.currentTarget.style.borderColor = '#002a3d';
@@ -137,6 +139,7 @@ function CourseDetail() {
               >
                 ซื้อเลย
               </Button>
+              </div>
 
               <Divider style={{ margin: '20px' }} />
 

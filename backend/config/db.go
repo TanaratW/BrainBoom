@@ -41,7 +41,7 @@ func DB() *gorm.DB {
 
 func ConnectionDB() {
 	database, err := gorm.Open(sqlite.Open("brainboom.db?cache=shared"), &gorm.Config{
-		Logger: &CustomLogger{}, // ใช้ Custom Logger
+		Logger: &CustomLogger{},
 	})
 
 	if err != nil {
@@ -50,7 +50,10 @@ func ConnectionDB() {
 
 	fmt.Println("connected database")
 	db = database
+	
+	
 }
+
 
 func SetupDatabase() error {
 
@@ -210,8 +213,8 @@ func SetupDatabase() error {
 
 	// Seed a default Course Category
 	var courseCategory entity.CourseCategories
-	if err := db.Where("category_name = ?", "แนะนำสำหรับคุณ").First(&courseCategory).Error; err != nil {
-		courseCategory = entity.CourseCategories{CategoryName: "แนะนำสำหรับคุณ"}
+	if err := db.Where("category_name = ?", "ไอทีและซอฟต์แวร์").First(&courseCategory).Error; err != nil {
+		courseCategory = entity.CourseCategories{CategoryName: "ไอทีและซอฟต์แวร์"}
 		if err := db.Create(&courseCategory).Error; err != nil {
 			return fmt.Errorf("failed to create CourseCategory: %w", err)
 		}
@@ -278,23 +281,22 @@ func SetupDatabase() error {
 
 	task1 := &entity.Tasks{
 		Title:     "Complete Golang Project",
-		StartDate: time.Now().AddDate(0, 0, 1), // เริ่มต้นวันพรุ่งนี้
-		EndDate:   time.Now().AddDate(0, 0, 7), // สิ้นสุดอีก 7 วัน
+		StartDate: time.Now().AddDate(0, 0, 1), 
+		EndDate:   time.Now().AddDate(0, 0, 7), 
 		AllDay:    false,
 		UserID:    &uid1,
 	}
 
 	task2 := &entity.Tasks{
 		Title:     "Prepare React Course Material",
-		StartDate: time.Now().AddDate(0, 0, 2), // เริ่มต้นอีก 2 วัน
-		EndDate:   time.Now().AddDate(0, 0, 5), // สิ้นสุดอีก 5 วัน
+		StartDate: time.Now().AddDate(0, 0, 2), 
+		EndDate:   time.Now().AddDate(0, 0, 5), 
 		AllDay:    true,
 		UserID:    &uid1,
 	}
 	db.FirstOrCreate(task1, &entity.Tasks{Title: task1.Title})
 	db.FirstOrCreate(task2, &entity.Tasks{Title: task2.Title})
 
-	//payment ตะวันสร้างจำนองเพื่อเรียก รีวิว  ByIdUser 
 	puid1 := uint(3)
 	puid2 := uint(4)
 	puid3 := uint(5)
@@ -303,6 +305,7 @@ func SetupDatabase() error {
 	pcid3 := uint(3)
 	pcid4 := uint(4)
 	pcid6 := uint(6)
+	pcid7 := uint(7)
 	pcid8 := uint(8)
 	pcid9 := uint(9)
 	payment1 := &entity.Payments{
@@ -345,7 +348,7 @@ func SetupDatabase() error {
 		Amount: 7999,
 		EnrollmentDate: time.Now(),
 		UserID: &puid3,
-		CourseID: &pcid3,
+		CourseID: &pcid7,
 	}
 	payment8 := &entity.Payments{
 		Amount: 8999,
