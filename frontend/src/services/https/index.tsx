@@ -398,8 +398,8 @@ export const GetReviewById = async (id: number): Promise<ReviewInterface[]> => {
       if (!response.ok) throw new Error('การตอบสนองของเครือข่ายไม่ถูกต้อง');
       const data = await response.json();
       return Array.isArray(data) ? data : []; // ตรวจสอบให้แน่ใจว่าคืนค่าเป็นอาร์เรย์
-  } catch (error) {
-      console.error('ข้อผิดพลาดในการดึงรีวิวตาม ID:', error);
+  } catch {
+      
       return [];
   }
 };
@@ -423,8 +423,7 @@ export const GetFilteredReviews = async (starLevel: string, courseID?: number): 
       if (response.status === 204) return [];
       if (!response.ok) throw new Error('การตอบสนองของเครือข่ายไม่ถูกต้อง');
       return await response.json();
-  } catch (error) {
-      console.error('ข้อผิดพลาดในการดึงรีวิวที่กรอง:', error);
+  } catch {
       return false;
   }
 };
@@ -446,8 +445,7 @@ export const SearchReviewsByKeyword = async (keyword: string, courseID: number):
       if (response.status === 204) return [];
       if (!response.ok) throw new Error('การตอบสนองของเครือข่ายไม่ถูกต้อง');
       return await response.json();
-  } catch (error) {
-      console.error('ข้อผิดพลาดในการค้นหารีวิวตามคำสำคัญ:', error);
+  } catch  {  
       return false;
   }
 };

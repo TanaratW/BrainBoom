@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Card, Button } from "antd";
+import { Card, Button, Empty } from "antd";
 import { Star } from "phosphor-react";
 import { Link, useNavigate } from "react-router-dom";
 import HeaderComponent from "../../../components/header";
@@ -55,7 +55,6 @@ function Course() {
         [courseID]: reviewsData,
       }));
 
-      // Calculate average rating for the course
       const ratings = reviewsData.map((review) => review.Rating ?? 0);
       const average =
         ratings.length > 0
@@ -116,88 +115,92 @@ function Course() {
                 paddingBottom: "15px",
               }}
             >
-              {courses.slice(0, 7).map((course: CourseInterface) => (
-                <div key={course.ID} onClick={() => handleCourseClick(course)}>
-                  <Card
-                    key={`course-card-${course.ID}`}
-                    hoverable
-                    cover={
-                      <img
-                        alt={course.Title}
-                        src={
-                          course.ProfilePicture ||
-                          "https://via.placeholder.com/200x200"
-                        }
-                        style={{
-                          borderRadius: "20px",
-                          height: "200px",
-                          objectFit: "cover",
-                          width: "100%",
-                          padding: "10px",
-                          overflow: "hidden",
-                        }}
-                      />
-                    }
-                    style={{
-                      borderRadius: "15px",
-                      overflow: "hidden",
-                      boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
-                      width: "200px",
-                      backgroundColor: "#fff",
-                      border: "1px solid #ddd",
-                    }}
-                    styles={{ body: { padding: "0px 10px 10px 10px" } }}
-                  >
-                    <Meta
-                      title={course.Title}
-                      description={`Tutor: ${course.TutorProfileID}`}
-                      style={{ fontSize: "12px" }}
-                    />
-                    <div
-                      style={{
-                        marginTop: "5px",
-                        display: "flex",
-                        alignItems: "center",
-                        fontSize: "12px",
-                        gap: "5px",
-                      }}
-                    >
-                      <Star
-                        size={15}
-                        weight="fill"
-                        style={{ color: "#ffcc00", marginLeft: "5px" }}
-                      />
-                      <div style={{ display: "flex", alignItems: "center" }}>
-                        <span
+              {courses.length > 0 ? (
+                courses.slice(0, 7).map((course: CourseInterface) => (
+                  <div key={course.ID} onClick={() => handleCourseClick(course)}>
+                    <Card
+                      key={`course-card-${course.ID}`}
+                      hoverable
+                      cover={
+                        <img
+                          alt={course.Title}
+                          src={
+                            course.ProfilePicture ||
+                            "https://via.placeholder.com/200x200"
+                          }
                           style={{
-                            color: "rgb(99, 94, 94)",
+                            borderRadius: "20px",
+                            height: "200px",
+                            objectFit: "cover",
+                            width: "100%",
+                            padding: "10px",
+                            overflow: "hidden",
                           }}
-                        >
-                          {course.ID !== undefined &&
-                          reviews[course.ID]?.length > 0
-                            ? `${reviews[
-                                course.ID
-                              ].length.toLocaleString()} Course Rating: ${
-                                averageRatings[course.ID] || 0
-                              } Ratings`
-                            : "0 Course Rating: 0 Ratings"}
-                        </span>
-                      </div>
-                    </div>
-                    <div
+                        />
+                      }
                       style={{
-                        marginTop: "5px",
-                        fontWeight: "bold",
-                        color: "#ff4500",
-                        fontSize: "14px",
+                        borderRadius: "15px",
+                        overflow: "hidden",
+                        boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
+                        width: "200px",
+                        backgroundColor: "#fff",
+                        border: "1px solid #ddd",
                       }}
+                      styles={{ body: { padding: "0px 10px 10px 10px" } }}
                     >
-                      <span className="currency">฿</span>
-                      {course.Price?.toFixed(2)}
-                    </div>
-                  </Card>
-                </div>
-              ))}
+                      <Meta
+                        title={course.Title}
+                        description={`Tutor: ${course.TutorProfileID}`}
+                        style={{ fontSize: "12px" }}
+                      />
+                      <div
+                        style={{
+                          marginTop: "5px",
+                          display: "flex",
+                          alignItems: "center",
+                          fontSize: "12px",
+                          gap: "5px",
+                        }}
+                      >
+                        <Star
+                          size={15}
+                          weight="fill"
+                          style={{ color: "#ffcc00", marginLeft: "5px" }}
+                        />
+                        <div style={{ display: "flex", alignItems: "center" }}>
+                          <span
+                            style={{
+                              color: "rgb(99, 94, 94)",
+                            }}
+                          >
+                            {course.ID !== undefined &&
+                            reviews[course.ID]?.length > 0
+                              ? `${reviews[
+                                  course.ID
+                                ].length.toLocaleString()} Course Rating: ${
+                                  averageRatings[course.ID] || 0
+                                } Ratings`
+                              : "0 Course Rating: 0 Ratings"}
+                          </span>
+                        </div>
+                      </div>
+                      <div
+                        style={{
+                          marginTop: "5px",
+                          fontWeight: "bold",
+                          color: "#ff4500",
+                          fontSize: "14px",
+                        }}
+                      >
+                        <span className="currency">฿</span>
+                        {course.Price?.toFixed(2)}
+                      </div>
+                    </Card>
+                  </div>
+                ))
+              ) : (
+                <Empty description="ไม่พบคอร์สที่ค้นหา" />
+              )}
               <div
                 key={`more-btn-${category.id}`}
                 style={{
@@ -228,6 +231,8 @@ function Course() {
             </div>
           </div>
         ))}
+
+        
       </section>
     </>
   );
