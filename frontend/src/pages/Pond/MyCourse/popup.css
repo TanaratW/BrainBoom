@@ -1,21 +1,22 @@
-.Comment-star{
+.Comment-star {
     margin-top: 20px;
 }
 
 .comment {
     display: flex;
-    height: 100vh; 
+    height: 100vh;
     height: fit-content;
 }
 
-input[type=radio]{
+input[type=radio] {
     display: none;
 }
 
-.star{
+.star {
     cursor: pointer;
 }
-.text{
+
+.text {
     text-align: left;
     font-size: 24px;
     width: 200px;
@@ -24,7 +25,7 @@ input[type=radio]{
 
 }
 
-.top-product{
+.top-product {
     font-size: 28px;
     margin-top: 40px;
     margin-right: 5px;
@@ -39,43 +40,74 @@ input[type=radio]{
     font-family: cursive;
 }
 
-.product-review {
+.header-mycourse{
+    margin-left: 25px;
+    background-color: #37496d;
+    width: 250px;
+    height: 70px;
     display: flex;
-    margin-top: 40px;
-    margin-left: 20px;
     justify-content: center;
     align-items: center;
-    width: 600px;
-    height: 200px;
+    text-align: center;
+    color: #FFF;
+    font-size: 36px;
+    font-family: 'Times New Roman', Times, serif;
+    border-radius: 15px;
+}
+.product-review {
+    display: flex;
+    margin-left: 30px;
+    justify-content: center;
+    align-items: center;
+    width: 280px;
+    height: 350px;
     border-radius: 20px;
-    box-shadow: 0px 3px 15px rgba(0, 0, 0, 0.2);
-    overflow: hidden; 
+    overflow: hidden;
+    position: relative; 
+    padding: 0; 
 }
 
-.product-review img{
-    border-radius: 25px;
-    width: 250px;
-    margin-bottom: 50px;
-    margin-top: 50px;
+.review-layer {
+    width: 75%;
+    height: 600px;
+    display: flex;
+    gap: 0;
+    place-items: center;
+    justify-content: center;
+    margin-left: 20vh;
+    margin-top: 20px;
+    border-color: #d9e0e6; 
+    border-width: 1px; 
+    border-style: solid; /* ประเภทของเส้นขอบ */
+    border-radius: 20px; /* มุมโค้งของกรอบ */
+    overflow-y: auto;
 }
-.product-review .text-product{
+
+.product-review img {
+    width: 200px;
+    height: 130px;
+    border-radius: 20%; /* Circular profile image */
+    object-fit: cover;
+}
+
+.product-review .text-product {
     margin-left: 20px;
     font-size: 18px;
     color: #003459;
     font-family: cursive;
 }
 
-.product-review .text-product .payment{
+.product-review .text-product .payment {
     color: rgb(51, 244, 180);
     background-color: white;
     border-radius: 25px;
 }
 
-.button-open{
+.button-open {
     margin-top: 20px;
 }
 
-.button-open .button-open-model{
+.button-open .button-open-model {
     border-radius: 25px;
     border-color: rgb(19, 19, 19);
     color: #FFF;
@@ -87,7 +119,7 @@ input[type=radio]{
 }
 
 
-.text-area{
+.text-area {
     box-shadow: 0px 3px 2px rgba(0, 0, 0, 0.2);
 }
 
@@ -110,7 +142,7 @@ input[type=radio]{
     border-radius: 5px;
 }
 
-.modal .button{
+.modal .button {
     margin-left: 300px;
     border-radius: 5px;
     width: 90px;
@@ -120,14 +152,14 @@ input[type=radio]{
     font-family: cursive;
 }
 
-.modal .button:hover{
+.modal .button:hover {
     background-color: #333D51;
     color: white;
     cursor: pointer;
     font-size: 17px;
     font-family: cursive;
 }
-  
+
 
 .overlay {
     position: fixed;
@@ -138,24 +170,15 @@ input[type=radio]{
     background-color: rgba(0, 0, 0, 0.2);
     z-index: 1000;
 }
-  
-.review-layer{
-    width: 100%;
-    height: auto;
-    display: grid;
-    grid-template-columns: 1fr 1fr ;
-    place-items: center;
 
-}
-
-.box-button-reviews{
+.box-button-reviews {
     display: flex;
     justify-content: right;
 }
 
 .ant-upload-list-item-thumbnail img {
-    border-radius: 0; 
-    width: 100%; 
+    border-radius: 0;
+    width: 100%;
     height: 100%;
-    object-fit: cover; 
-  }
+    object-fit: cover;
+}
