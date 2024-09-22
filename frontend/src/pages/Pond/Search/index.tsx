@@ -3,9 +3,11 @@ import { Card, Input, message, Space, Empty, Select } from "antd";
 import { Star } from "phosphor-react";
 import { useNavigate } from "react-router-dom";
 import HeaderComponent from "../../../components/header";
-import { GetCourses, SearchCourseByKeyword, GetCourseCategories, GetCourseByCategoryID } from "../../../services/https";
+import { GetCourses, SearchCourseByKeyword, GetCourseCategories, GetCourseByCategoryID, GetReviewById} from "../../../services/https";
 import { CourseInterface } from "../../../interfaces/ICourse";
 import { CourseCategoryInterface } from "../../../interfaces/ICourse_Category";
+import { ReviewInterface } from "../../../interfaces/IReview";
+
 
 const { Meta } = Card;
 const { Search } = Input;
@@ -14,7 +16,12 @@ function SearchCourse() {
   const [courses, setCourses] = useState<CourseInterface[]>([]);
   const [categories, setCategories] = useState<CourseCategoryInterface[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
-  //const [error, setError] = useState<string | null>(null);
+  const [reviews, setReviews] = useState<{
+    [courseID: number]: ReviewInterface[];
+  }>({});
+  const [averageRatings, setAverageRatings] = useState<{
+    [courseID: number]: number;
+  }>({});
 
   const navigate = useNavigate();
   const [categoryID, setCategoryID] = useState<number | undefined>();
@@ -22,6 +29,36 @@ function SearchCourse() {
   const handleCourseClick = (course: CourseInterface) => {
     navigate(`/course/${course.ID}`, { state: { course } });
   };
+
+  const fetchReviews = async (courseID: number) => {
+    try {
+      const reviewsData = await GetReviewById(courseID);
+      setReviews((prevReviews) => ({
+        ...prevReviews,
+        [courseID]: reviewsData,
+      }));
+
+      const ratings = reviewsData.map((review) => review.Rating ?? 0);
+      const average =
+        ratings.length > 0
+          ? ratings.reduce((sum, rating) => sum + rating, 0) / ratings.length
+          : 0;
+      setAverageRatings((prevRatings) => ({
+        ...prevRatings,
+        [courseID]: parseFloat(average.toFixed(1)),
+      }));
+    } catch (error) {
+      console.error(`Error fetching reviews for course ${courseID}:`, error);
+    }
+  };
+
+  useEffect(() => {
+    if (courses.length > 0) {
+      courses.forEach((course) => {
+        fetchReviews(course.ID as number);
+      });
+    }
+  }, [courses]);
 
   const getCourses = async () => {
     try {
@@ -206,7 +243,15 @@ function SearchCourse() {
                         weight="fill"
                         style={{ color: "#ffcc00", marginLeft: "5px" }}
                       />
-                      5.0
+                      {course.ID !== undefined &&
+                        reviews[course.ID]?.length > 0
+                          ? `${reviews[
+                              course.ID
+                            ].length.toLocaleString()} Course Rating: ${
+                              averageRatings[course.ID] || 0
+                            } Ratings`
+                          : "0 Course Rating: 0 Ratings"
+                      }
                     </div>
                     <div
                       style={{

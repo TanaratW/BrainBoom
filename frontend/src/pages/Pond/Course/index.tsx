@@ -12,7 +12,7 @@ const { Meta } = Card;
 function Course() {
   const [courses, setCourses] = useState<CourseInterface[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
+  const [error] = useState<string | null>(null);
   const [reviews, setReviews] = useState<{
     [courseID: number]: ReviewInterface[];
   }>({});
@@ -29,17 +29,16 @@ function Course() {
   const getCourses = async () => {
     try {
       const courseData = await GetCourses();
-      console.log("Courses fetched:", courseData);
       if (courseData) {
         setCourses(courseData);
       } else {
-        setError("No courses found");
+        console.log("No courses found");
       }
     } catch (error) {
       if (error instanceof Error) {
-        setError("Failed to fetch courses: " + error.message);
+        console.log("Failed to fetch courses: " + error.message);
       } else {
-        setError("Failed to fetch courses");
+        console.log("Failed to fetch courses");
       }
       console.error("Error fetching courses:", error);
     } finally {
