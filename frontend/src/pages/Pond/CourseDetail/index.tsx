@@ -1,11 +1,10 @@
-//import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Card, Button, Typography, Divider } from 'antd';
 import { useNavigate, useLocation  } from 'react-router-dom';
 import HeaderComponent from '../../../components/header';
 import moment from 'moment';
 import Example_Review from './Model/Example_Review';
 import ModalTest from "./Model/Model"; 
-import { useState } from 'react';
 
 const { Title, Text } = Typography;
 
