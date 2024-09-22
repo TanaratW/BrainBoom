@@ -170,9 +170,6 @@ function Course() {
                       <div style={{ display: "flex", alignItems: "center" }}>
                         <span
                           style={{
-                            marginLeft: "10px",
-                            fontSize: "18px",
-                            fontWeight: "bold",
                             color: "rgb(99, 94, 94)",
                           }}
                         >
