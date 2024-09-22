@@ -165,11 +165,12 @@ function SearchCourse() {
             }}
           >
             <Select
+              defaultValue={0}
               placeholder="เลือกหมวดหมู่"
               onChange={handleCategoryChange}
-              style={{ width: '25%', marginBottom: '10px' }}
+              style={{ width: '20%', marginBottom: '10px' }}
             >
-              <Select.Option value={0}>เลือกหมวดหมู่</Select.Option>
+              <Select.Option value={0}>คอร์สทั้งหมด</Select.Option>
               {categories.map((category) => (
                 <Select.Option key={category.ID} value={category.ID}>
                   {category.CategoryName}
@@ -186,6 +187,16 @@ function SearchCourse() {
                 marginBottom: "10px",
               }}
             />
+            <Select
+              placeholder="เรียงลำดับตามราคา"
+              onChange={handleCategoryChange}
+              style={{ width: '20%', marginBottom: '10px' }}
+            >
+              <Select.Option value={0}>เรียงลำดับตามราคา</Select.Option>
+              <Select.Option value={1}>มากไปน้อย</Select.Option>
+              <Select.Option value={2}>น้อยไปมาก</Select.Option>
+              
+            </Select>
           </div>
           {courses.length > 0 ? (
             <div
