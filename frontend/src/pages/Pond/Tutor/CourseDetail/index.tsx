@@ -2,8 +2,8 @@ import { useState } from 'react';
 import { Card, Button, Typography, Divider } from 'antd';
 import { useLocation  } from 'react-router-dom';
 import HeaderComponent from '../../../../components/header';
-import Example_Review from './Model/Example_Review';
-import ModalTest from "./Model/Model";
+import Example_Review from '../../CourseDetail/Model/Example_Review';
+import ModalTest from "../../CourseDetail/Model/Model";
 import moment from 'moment';
 
 const { Title, Text } = Typography;

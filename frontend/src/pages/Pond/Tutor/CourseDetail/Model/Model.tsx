@@ -11,7 +11,7 @@ import { Modal, Input, Button, Row, Col, Divider, Select } from "antd";
 import AverageStar from "../../../../../Feature/AverageStar"; 
 import Like from "../../../../../Feature/Like"; 
 import "./modal.css"; 
-import NoReview from "../../../../../assets/no review.jpg";
+import NoReview from "../../../../assets/no review.jpg";
 
 const { Option } = Select; 
 
