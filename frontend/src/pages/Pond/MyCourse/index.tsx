@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import HeaderComponent from "../../../components/header";
-//import { Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import Modal from "./CreateReview/Pop_Up";
 import { GetReviewById, GetPaymentByIdUser } from "../../../services/https";
-import { message, Card, Row } from "antd";
+import { message, Card } from "antd";
 import { PaymentsReviewInterface } from "../../../interfaces/IPayment";
 import "./popup.css";
 
@@ -71,10 +71,13 @@ const Review: React.FC = () => {
       <div className="review-layer">
         {payments.map((payment) => (
           <Card key={payment.CourseID} className="product-review">
-            <img
-              src={payment.Course.ProfilePicture}
-              alt={`${payment.Course.Title} Course`}
-            />
+            <Link to={`/course/${payment.CourseID}`}>
+              <img
+                src={payment.Course.ProfilePicture}
+                alt={`${payment.Course.Title} Course`}
+              />
+            </Link>
+
             <p className="text-product">
               <strong>Name : {payment.Course.Title}</strong>
               <br />
@@ -84,9 +87,7 @@ const Review: React.FC = () => {
                   <button
                     className="button-open-model"
                     onClick={() =>
-                      messageApi.warning(
-                        "ท่านได้ทำการรีวิวหลักสูตรนี้แล้ว"
-                      )
+                      messageApi.warning("ท่านได้ทำการรีวิวหลักสูตรนี้แล้ว")
                     }
                   >
                     Already Reviewed
