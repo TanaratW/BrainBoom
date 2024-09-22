@@ -43,7 +43,7 @@ const Review: React.FC = () => {
 
   const openModal = (id: number) => {
     if (hasReviewed[id]) {
-      messageApi.warning("You have already reviewed this course.");
+      messageApi.warning("ท่านได้ทำการรีวิวหลักสูตรนี้แล้ว");
       return;
     }
     setCurrentCourseId(id);
@@ -85,7 +85,7 @@ const Review: React.FC = () => {
                     className="button-open-model"
                     onClick={() =>
                       messageApi.warning(
-                        "You have already reviewed this course."
+                        "ท่านได้ทำการรีวิวหลักสูตรนี้แล้ว"
                       )
                     }
                   >
