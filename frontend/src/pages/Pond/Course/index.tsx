@@ -128,7 +128,7 @@ function Course() {
                         weight="fill"
                         style={{ color: "#ffcc00", marginLeft: "5px" }}
                       />
-                      5.0
+                      5.0 {/* Tawun edit avg star*/}
                     </div>
                     <div
                       style={{

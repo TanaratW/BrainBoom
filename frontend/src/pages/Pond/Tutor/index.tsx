@@ -211,7 +211,7 @@ function Tutor() {
                           <Title level={4} style={{ color: '#333d51', margin: "0px" }}>{course.Title}</Title>
                           <Text style={{ color: '#7d7d7d' }}>จำนวนผู้สมัคร: {/*{course.CountStd || 0}*/}</Text>
                           <Space>
-                            <Text>5.0{/*{course.Rating || 'N/A'}*/}</Text>
+                            <Text>5.0{/*{course.Rating || 'N/A'} Tawun Edit Reviews*/}</Text>
                           </Space>
                           <Text strong style={{ color: '#ff4500' }}>฿{course.Price}</Text>
                         </Space>
