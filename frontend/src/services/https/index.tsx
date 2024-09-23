@@ -4,6 +4,7 @@ import axios from "axios";
 import { CourseInterface } from "../../interfaces/ICourse";
 import { ReviewInterface } from "../../interfaces/IReview";
 import { PaymentsInterface } from "../../interfaces/IPayment";
+import { LikeStatusResponse } from "../../interfaces/ILike";
 
 const apiUrl = "http://localhost:8000";
 
@@ -553,7 +554,7 @@ export const fetchLikeStatus = async (reviewID: number, userID: number): Promise
 };
 
 // ฟังก์ชันสำหรับกดไลค์
-export const onLikeButtonClick = async (reviewID: number, userID: number): Promise<any | false> => {
+export const onLikeButtonClick = async (reviewID: number, userID: number): Promise<LikeStatusResponse | false> => {
   try {
       const response = await fetch(`${apiUrl}/reviews/like`, {
           method: "POST",
@@ -607,8 +608,8 @@ async function GetTotalCourse() {
   return res;
 }
 
-// Payment By Max ตะวันใช้ดึงข้อมูล user มารีวิว in MyCourse
-async function GetPaymentByIdUser(userID: number): Promise<any> {
+// Payment By Mac ตะวันใช้ดึงข้อมูล user มารีวิว in MyCourse
+async function GetPaymentByIdUser(userID: number): Promise<PaymentsInterface[] | null | false> {
   const requestOptions = {
     method: "GET",
     headers: {
