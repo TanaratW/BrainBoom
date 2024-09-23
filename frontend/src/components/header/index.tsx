@@ -11,7 +11,7 @@ const { Header } = Layout;
 
 function HeaderComponent() {
   const username = localStorage.getItem('username') || 'Unknown User';
-  const userID = localStorage.getItem('id') || 0;
+  //const userID = localStorage.getItem('id') || 0;
   
   const [current, setCurrent] = useState("course");
   const navigate = useNavigate();
@@ -85,7 +85,7 @@ function HeaderComponent() {
   }, [location]);
 
   const handleUserPrufileClick = () => {
-    navigate(`/tutor_profiles/users/${userID}` );
+    navigate(`/tutor_profiles` );
   };
 
 
