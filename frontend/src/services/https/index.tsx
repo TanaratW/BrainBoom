@@ -4,6 +4,7 @@ import axios from "axios";
 import { CourseInterface } from "../../interfaces/ICourse";
 import { ReviewInterface } from "../../interfaces/IReview";
 import { PaymentsInterface } from "../../interfaces/IPayment";
+import { LikeStatusResponse } from "../../interfaces/ILike";
 import { Tutor as TutorInterface } from "../../interfaces/Tutor";
 
 const apiUrl = "http://localhost:8000";
@@ -205,10 +206,51 @@ async function AddLoginHistory(userId: number) {
     .catch((e) => e.response);
 }
 
+async function GetCoursesByPriceASC() {
+  const requestOptions = {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+
+  const res = await fetch(`${apiUrl}/courses/price/asc`, requestOptions).then((res) => {
+    if (res.status === 200) {
+      return res.json();
+    } else {
+      throw new Error("Response is not in JSON format");
+    }
+  });
+
+  return res;
+}
+
+async function GetCoursesByPriceDESC() {
+  const requestOptions = {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+
+  const res = await fetch(`${apiUrl}/courses/price/desc`, requestOptions).then((res) => {
+    if (res.status === 200) {
+      return res.json();
+    } else {
+      throw new Error("Response is not in JSON format");
+    }
+  });
+
+  return res;
+}
+
+async function GetCourseCategories() {
+
 
 
 //Pond
 async function GetCourses() {
+
   const requestOptions = {
     method: "GET",
     headers: {
@@ -281,22 +323,30 @@ async function GetCourseById(id: number) {
   return res;
 }
 
-async function GetCourseByCategoryID(categoryID: number) {
-  try {
-    const response = await fetch(`/courses/category/${categoryID}`);
-    if (!response.ok) throw new Error("การตอบสนองของเครือข่ายไม่ถูกต้อง");
+async function GetCourseByCategoryID(id: number): Promise<CourseInterface[]> {
+  const requestOptions = {
+    method: "GET",
+  };
 
-    const contentType = response.headers.get("content-type");
-    if (contentType && contentType.includes("application/json")) {
-      return await response.json();
+  try {
+    const res = await fetch(`${apiUrl}/courses/category/${id}`, requestOptions);
+
+    if (res.ok) {
+      const data = await res.json();
+      if (Array.isArray(data)) {
+        return data;
+      } else {
+        return [];
+      }
     } else {
-      throw new Error("การตอบสนองไม่ใช่ JSON");
+      return []; 
     }
-  } catch (error) {
-    console.error("ข้อผิดพลาดในการดึงข้อมูลคอร์ส:", error);
-    return false;
+  } catch {
+    return [];
   }
 }
+
+
 
 async function GetCourseByTutorID(tutorID: number) {
   try {
@@ -402,8 +452,8 @@ export const GetReviewById = async (id: number): Promise<ReviewInterface[]> => {
       if (!response.ok) throw new Error('การตอบสนองของเครือข่ายไม่ถูกต้อง');
       const data = await response.json();
       return Array.isArray(data) ? data : []; // ตรวจสอบให้แน่ใจว่าคืนค่าเป็นอาร์เรย์
-  } catch (error) {
-      console.error('ข้อผิดพลาดในการดึงรีวิวตาม ID:', error);
+  } catch {
+      
       return [];
   }
 };
@@ -427,8 +477,7 @@ export const GetFilteredReviews = async (starLevel: string, courseID?: number): 
       if (response.status === 204) return [];
       if (!response.ok) throw new Error('การตอบสนองของเครือข่ายไม่ถูกต้อง');
       return await response.json();
-  } catch (error) {
-      console.error('ข้อผิดพลาดในการดึงรีวิวที่กรอง:', error);
+  } catch {
       return false;
   }
 };
@@ -450,8 +499,7 @@ export const SearchReviewsByKeyword = async (keyword: string, courseID: number):
       if (response.status === 204) return [];
       if (!response.ok) throw new Error('การตอบสนองของเครือข่ายไม่ถูกต้อง');
       return await response.json();
-  } catch (error) {
-      console.error('ข้อผิดพลาดในการค้นหารีวิวตามคำสำคัญ:', error);
+  } catch  {  
       return false;
   }
 };
@@ -521,7 +569,7 @@ export const fetchLikeStatus = async (reviewID: number, userID: number): Promise
 };
 
 // ฟังก์ชันสำหรับกดไลค์
-export const onLikeButtonClick = async (reviewID: number, userID: number): Promise<any | false> => {
+export const onLikeButtonClick = async (reviewID: number, userID: number): Promise<LikeStatusResponse | false> => {
   try {
       const response = await fetch(`${apiUrl}/reviews/like`, {
           method: "POST",
@@ -575,8 +623,8 @@ async function GetTotalCourse() {
   return res;
 }
 
-// Payment By Max ตะวันใช้ดึงข้อมูล user มารีวิว in MyCourse
-async function GetPaymentByIdUser(userID: number): Promise<any> {
+// Payment By Mac ตะวันใช้ดึงข้อมูล user มารีวิว in MyCourse
+async function GetPaymentByIdUser(userID: number): Promise<PaymentsInterface[] | null | false> {
   const requestOptions = {
     method: "GET",
     headers: {
@@ -695,6 +743,10 @@ export {
   AddLoginHistory,
   //Course Pond
   GetCourses,
+  GetCoursesByPriceASC,
+  GetCoursesByPriceDESC,
+  GetCourseCategories,
+
   CreateCourse,
   UpdateCourse,
   GetCourseById,

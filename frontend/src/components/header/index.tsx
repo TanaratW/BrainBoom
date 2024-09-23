@@ -39,11 +39,11 @@ const { Header } = Layout;
 
 function HeaderComponent() {
   const username = localStorage.getItem('username') || 'Unknown User';
+  const userID = localStorage.getItem('id') || 0;
   const [current, setCurrent] = useState("course");
   const navigate = useNavigate();
 
   const onClick: MenuProps['onClick'] = (e) => {
-    console.log('click ', e);
     setCurrent(e.key);
 
     if (e.key === 'logout') {
@@ -57,6 +57,11 @@ function HeaderComponent() {
       }, 2000);
     }
   };
+
+  const handleUserPrufileClick = () => {
+    navigate(`/tutor_profiles/users/${userID}` );
+  };
+
 
   return (
     <Header
@@ -128,10 +133,12 @@ function HeaderComponent() {
           maxWidth: '200px',
           gap: '10px',
         }}
+        onClick={() => handleUserPrufileClick()}
       >
         <div
           style={{
             color: '#f0f0f0',
+            fontSize: '13px',
             fontSize: '12px',
             display: 'flex',
             alignItems: 'center',

@@ -21,13 +21,14 @@ function Course() {
 
   const getCourses = async () => {
     try {
-      const res = await GetCourses();
-      console.log("Courses fetched:", res);
-      if (res) {
-        setCourses(res);
+      const course = await GetCourses();
+      console.log("Courses fetched:", course);
+      if (course) {
+        setCourses(course);
       } else {
         setError("No courses found");
       }
+
     } catch (error) {
       if (error instanceof Error) {
         setError("Failed to fetch courses: " + error.message);
@@ -78,7 +79,7 @@ function Course() {
                 paddingBottom: "15px",
               }}
             >
-              {courses.map((course: CourseInterface) => (
+              {courses.slice(0, 7).map((course: CourseInterface) => (
                 
                 <div key={course.ID} onClick={() => handleCourseClick(course)}>
                   <Card
@@ -126,7 +127,8 @@ function Course() {
                         size={15}
                         weight="fill"
                         style={{ color: "#ffcc00", marginLeft: "5px" }}
-                      />5.0
+                      />
+                      5.0
                     </div>
                     <div
                       style={{
