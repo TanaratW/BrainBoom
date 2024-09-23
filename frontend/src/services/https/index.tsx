@@ -408,7 +408,7 @@ export const GetUserByIdReview = async (id: number | undefined): Promise<UsersIn
 };
 
 // สร้างรีวิว
-export const CreateReview = async (data: ReviewInterface): Promise<ReviewInterface | false> => {
+ const CreateReview = async (data: ReviewInterface): Promise<ReviewInterface | false> => {
   try {
       const response = await fetch(`${apiUrl}/reviews`, {
           method: "POST",
@@ -425,7 +425,7 @@ export const CreateReview = async (data: ReviewInterface): Promise<ReviewInterfa
 };
 
 // รายการรีวิวทั้งหมด
-export const ListReview = async (): Promise<ReviewInterface[] | false> => {
+ const ListReview = async (): Promise<ReviewInterface[] | false> => {
   try {
       const response = await fetch(`${apiUrl}/reviews`, {
           method: "GET",

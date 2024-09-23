@@ -57,11 +57,11 @@ func main() {
 		router.GET("/courses", course.ListCourse)
 		router.GET("/courses/:id", course.GetCourse)
 		router.GET("/courses/category/:id", course.GetCourseByCategoryID)
-		router.GET("/courses/price/asc", course.GetCourseByPriceASC)
-		router.GET("/courses/price/desc", course.GetCourseByPriceDESC)
+		//router.GET("/courses/price/asc", course.GetCourseByPriceASC)
+		//router.GET("/courses/price/desc", course.GetCourseByPriceDESC)
 		router.GET("/tutor/:id", course.GetCourseByTutorID)
 		router.GET("/courses/search", course.SearchCourseByKeyword)
-		router.GET("/tutor/:id", course.GetCourseByCategoryID)
+		//router.GET("/tutor/:id", course.GetCourseByCategoryID)
 
 		router.POST("/courses", course.CreateCourse)
 		router.PUT("/courses/:id", course.UpdateCourse)
@@ -100,7 +100,14 @@ func main() {
 		c.String(http.StatusOK, "API RUNNING... PORT: %s", PORT)
 	})
 
-
+	// ของ อาย ????
+	// เส้นทางสำหรับ tutor profiles
+	// Route to get tutor profile by userID
+	//r.GET("/:id", tutor_profiles.GetTutorProfile)
+	//r.GET("/users/:id", tutor_profiles.GetTutorProfileByUserID)
+	//r.POST("/tutor_profiles", tutor_profiles.CreateTutorProfile)
+	//r.PATCH("/tutor_profiles/:id", tutor_profiles.UpdateTutorProfile)
+	//r.DELETE("/tutor_profiles/:id", tutor_profiles.DeleteTutorProfile)
 
 	// เริ่มรันเซิร์ฟเวอร์
 	r.Run("localhost:" + PORT)
