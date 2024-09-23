@@ -167,9 +167,7 @@ function HeaderComponent() {
             fontSize: '13px',
           }}
         >
-          <Link to="/users">
-            {username}
-          </Link>
+          {username}
         </div>
         <Avatar size={45} icon={<UserOutlined />} />
       </div>
