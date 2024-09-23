@@ -160,6 +160,44 @@ async function GetCourses() {
   return res;
 }
 
+async function GetCoursesByPriceASC() {
+  const requestOptions = {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+
+  const res = await fetch(`${apiUrl}/courses/price/asc`, requestOptions).then((res) => {
+    if (res.status === 200) {
+      return res.json();
+    } else {
+      throw new Error("Response is not in JSON format");
+    }
+  });
+
+  return res;
+}
+
+async function GetCoursesByPriceDESC() {
+  const requestOptions = {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+
+  const res = await fetch(`${apiUrl}/courses/price/desc`, requestOptions).then((res) => {
+    if (res.status === 200) {
+      return res.json();
+    } else {
+      throw new Error("Response is not in JSON format");
+    }
+  });
+
+  return res;
+}
+
 async function GetCourseCategories() {
   const requestOptions = {
     method: "GET",
@@ -685,6 +723,8 @@ export {
   GetTutorProfileById,
   //Course Pond
   GetCourses,
+  GetCoursesByPriceASC,
+  GetCoursesByPriceDESC,
   GetCourseCategories,
   CreateCourse,
   UpdateCourse,

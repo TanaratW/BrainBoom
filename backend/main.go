@@ -47,6 +47,8 @@ func main() {
 		router.GET("/courses", course.ListCourse)
 		router.GET("/courses/:id", course.GetCourse)
 		router.GET("/courses/category/:id", course.GetCourseByCategoryID)
+		router.GET("/courses/price/asc", course.GetCourseByPriceASC)
+		router.GET("/courses/price/desc", course.GetCourseByPriceDESC)
 		router.GET("/tutor/:id", course.GetCourseByTutorID)
 		router.GET("/courses/search", course.SearchCourseByKeyword)
 		router.POST("/courses", course.CreateCourse)

@@ -3,7 +3,7 @@ import { Card, Input, message, Space, Empty, Select } from "antd";
 import { Star } from "phosphor-react";
 import { useNavigate } from "react-router-dom";
 import HeaderComponent from "../../../components/header";
-import { GetCourses, SearchCourseByKeyword, GetCourseCategories, GetCourseByCategoryID, GetReviewById} from "../../../services/https";
+import { GetCourses, SearchCourseByKeyword, GetCourseCategories, GetCourseByCategoryID, GetReviewById, GetCoursesByPriceDESC, GetCoursesByPriceASC} from "../../../services/https";
 import { CourseInterface } from "../../../interfaces/ICourse";
 import { CourseCategoryInterface } from "../../../interfaces/ICourse_Category";
 import { ReviewInterface } from "../../../interfaces/IReview";
@@ -147,6 +147,27 @@ function SearchCourse() {
       }
     }
   };
+
+  const handleSortChange = async (value: number | undefined) => {
+
+    if (value === undefined || value === 0) {
+      await getCourses();
+    } else if(value === 1){
+      try {
+        const courses = await GetCoursesByPriceDESC();
+        setCourses(courses);
+      } catch {
+        message.error("ไม่สามารถดึงข้อมูลคอร์สตามหมวดหมู่ได้");
+      }
+    } else if(value === 2){
+      try {
+        const courses = await GetCoursesByPriceASC();
+        setCourses(courses);
+      } catch {
+        message.error("ไม่สามารถดึงข้อมูลคอร์สตามหมวดหมู่ได้");
+      }
+    }
+  };
   
 
   if (loading) return <p>Loading...</p>;
@@ -188,8 +209,9 @@ function SearchCourse() {
               }}
             />
             <Select
+              defaultValue={0}
               placeholder="เรียงลำดับตามราคา"
-              onChange={handleCategoryChange}
+              onChange={handleSortChange}
               style={{ width: '20%', marginBottom: '10px' }}
             >
               <Select.Option value={0}>เรียงลำดับตามราคา</Select.Option>
