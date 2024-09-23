@@ -58,8 +58,8 @@ const Modal: React.FC<ModalProps> = ({
   const onFinish = async (values: ReviewInterface) => {
     if (rating === undefined || rating < 1) {
       messageApi.open({
-        type: "warning",
-        content: "กรุณาให้คะเเนน!",
+        type: "error",
+        content: "Please rate the course!",
       });
       return;
     }
@@ -78,9 +78,9 @@ const Modal: React.FC<ModalProps> = ({
       if (res) {
         messageApi.open({
           type: "success",
-          content: "รีวิวเรียบร้อย",
+          content: "ขอบคุณสำหรับการรีวิว",
         });
-        onReviewSubmit(CourseID); 
+        onReviewSubmit(CourseID); // อัปเดตสถานะการรีวิวทันทีหลังจากบันทึกสำเร็จ
         setTimeout(() => {
           onClose();
           navigate("/myCourses");
