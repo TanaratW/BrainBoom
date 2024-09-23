@@ -100,14 +100,7 @@ func main() {
 		c.String(http.StatusOK, "API RUNNING... PORT: %s", PORT)
 	})
 
-	// ของ อาย ????
-	// เส้นทางสำหรับ tutor profiles
-	// Route to get tutor profile by userID
-	//r.GET("/:id", tutor_profiles.GetTutorProfile)
-	//r.GET("/users/:id", tutor_profiles.GetTutorProfileByUserID)
-	//r.POST("/tutor_profiles", tutor_profiles.CreateTutorProfile)
-	//r.PATCH("/tutor_profiles/:id", tutor_profiles.UpdateTutorProfile)
-	//r.DELETE("/tutor_profiles/:id", tutor_profiles.DeleteTutorProfile)
+
 
 	// เริ่มรันเซิร์ฟเวอร์
 	r.Run("localhost:" + PORT)
