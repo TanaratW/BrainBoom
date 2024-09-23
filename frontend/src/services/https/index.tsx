@@ -354,6 +354,19 @@ async function GetCourseByTutorID(tutorID: number) {
   }
 }
 
+// ดึงข้อมูลโปรไฟล์ของ tutor ตาม ID
+async function GetTutorProfileById(UserID: number) {
+  return await axios
+    .get(`${apiUrl}/tutor_profiles/${UserID}`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: getAuthHeader(),
+      },
+    })
+    .then((res) => res)
+    .catch((e) => e.response);
+}
+
 async function SearchCourseByKeyword(keyword: string){
   try {
       const query = new URLSearchParams();
@@ -748,6 +761,7 @@ export {
   GetLoginHistory,
   AddLoginHistory,
   //Course Pond
+  GetTutorProfileById,
   GetCourses,
   GetCourseCategories,
   CreateCourse,
