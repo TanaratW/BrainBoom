@@ -129,6 +129,7 @@ const AdminRoutes = (isLoggedIn: boolean): RouteObject => {
         path: "tutor_profiles", 
         element: isLoggedIn ? (userRoleId === 2 ? <MyProfile /> : <ProfileUser />) : <MainPages />,
         children: [
+
           {
             path: "edit/:UserID", // อาย
             element: isLoggedIn ? <EditTutor /> : <MainPages />,
