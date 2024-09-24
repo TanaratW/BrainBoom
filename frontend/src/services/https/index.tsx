@@ -178,7 +178,7 @@ const loginService = async (data: LoginData): Promise<LoginResponse> => {
 
 async function GetLoginHistory(userId: number) {
   return await axios
-    .get(`${apiUrl}/login-history/${userId}`, {
+    .get(`${apiUrl}/loginhistory/${userId}`, {
       headers: {
         "Content-Type": "application/json",
         Authorization: getAuthHeader(),
@@ -196,7 +196,7 @@ async function AddLoginHistory(userId: number) {
   };
 
   return await axios
-    .post(`${apiUrl}/login-history`, data, {
+    .post(`${apiUrl}/loginhistory`, data, {
       headers: {
         "Content-Type": "application/json",
         Authorization: getAuthHeader(),
@@ -204,6 +204,16 @@ async function AddLoginHistory(userId: number) {
     })
     .then((res) => res.data)
     .catch((e) => e.response);
+}
+
+async function GetLoginHistoryByUserId(UserID: string) {
+  try {
+    const response = await axios.get(`${apiUrl}/loginhistory/users/${UserID}`); // แก้ไขเส้นทางให้ตรงกับ backend
+    return response.data; // ส่งคืนเฉพาะข้อมูลที่อยู่ใน response.data
+  } catch (error) {
+    console.error("Error fetching login history:", error);
+    throw error;
+  }
 }
 
 //Pond
@@ -938,6 +948,7 @@ export {
   AddLoginHistory,
   GetTutorProfileById,
   GetRecentTransactions,
+  GetLoginHistoryByUserId,
   //Course Pond
   GetCourses,
   GetCoursesByPriceASC,

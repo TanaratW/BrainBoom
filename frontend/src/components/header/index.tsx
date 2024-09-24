@@ -84,7 +84,7 @@ function HeaderComponent() {
   }, [location]);
 
   const handleUserPrufileClick = () => {
-    navigate(`/tutor_profiles` );
+    navigate(`/users` );
   };
 
 
