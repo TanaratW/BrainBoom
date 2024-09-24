@@ -1,8 +1,8 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Form, Input, Button, message, Upload } from "antd";
 import ReactDOM from "react-dom";
 import { ReviewInterface } from "../../../../interfaces/IReview";
-import { UpdateReview } from "../../../../services/https"; // ใช้ UpdateReview
+import { UpdateReview, GetReviewsByID } from "../../../../services/https"; // ใช้ UpdateReview
 import { useNavigate } from "react-router-dom";
 import StarRating from "../../../../Feature/Star";
 import "../popup.css";
@@ -35,6 +35,7 @@ const ModalEdit: React.FC<ModalProps> = ({
   const [loading, setLoading] = React.useState(false);
   const [rating, setRating] = React.useState<number | undefined>(undefined);
   const [fileList, setFileList] = React.useState<UploadFile[]>([]);
+  const [reviews, setReviews] = useState<ReviewInterface>();
 
   const onChange: UploadProps["onChange"] = ({ fileList: newFileList }) => {
     setFileList(newFileList);
@@ -102,6 +103,32 @@ const ModalEdit: React.FC<ModalProps> = ({
     }
   };
 
+  useEffect(() => {
+    const GetMemberid = async () => {
+      const res = await GetReviewsByID(reviewId);
+      if (res) {
+        setReviews(res.data);
+        form.setFieldsValue({
+          Rating: res.data.Rating,
+          Comment: res.data.Comment,
+        });
+        setRating(res.data.Rating); // ตั้งค่า rating ตามข้อมูลที่ดึงมา
+        if (res.data.Picture) {
+          setFileList([
+            {
+              uid: '-1',
+              name: 'profile.png', // หรือชื่อไฟล์ที่เหมาะสม
+              status: 'done',
+              url: res.data.Picture, // ใช้ URL ของรูปโปรไฟล์ที่มีอยู่
+            },
+          ]);
+        }
+      }
+    };
+    GetMemberid();
+  }, [reviewId, form]);
+  
+
   return ReactDOM.createPortal(
     <>
       {contextHolder}
@@ -117,10 +144,10 @@ const ModalEdit: React.FC<ModalProps> = ({
           >
             <Form.Item
               label="รูปโปรไฟล์"
-              name="Profile"
+              name="Picture"
               valuePropName="fileList"
             >
-              <ImgCrop rotationSlider>
+              <ImgCrop aspect={1} rotationSlider>
                 <Upload
                   fileList={fileList}
                   onChange={onChange}

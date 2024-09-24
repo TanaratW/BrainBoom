@@ -217,3 +217,16 @@ func UpdateReview(c *gin.Context) {
 
     c.JSON(http.StatusOK, gin.H{"message": "Updated successfully", "data": review})
 }
+
+func GetReviews(c *gin.Context) { // ดึงข้อมูลสมาชิกตาม ID
+	ID := c.Param("id")
+	var review entity.Reviews
+
+	db := config.DB()
+	result := db.First(&review, ID)
+	if result.Error != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": result.Error.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, review)
+}

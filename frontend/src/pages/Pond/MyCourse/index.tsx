@@ -89,7 +89,7 @@ const Review: React.FC = () => {
                   {hasReviewed[payment.CourseID!] ? (
                     <button
                       className="button-open-model"
-                      onClick={() => openModal(payment.CourseID!)} // เปลี่ยนเพื่อเปิดโมดัลที่สอง
+                      onClick={() => openModal(payment.CourseID!)} 
                     >
                       Edit Review
                     </button>

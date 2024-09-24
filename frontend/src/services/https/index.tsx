@@ -8,6 +8,22 @@ import { Tutor as TutorInterface } from "../../interfaces/Tutor";
 
 const apiUrl = "http://localhost:8000";
 
+const Authorization = localStorage.getItem("token");
+
+const Bearer = localStorage.getItem("token_type");
+
+const requestOptions = {
+
+  headers: {
+
+    "Content-Type": "application/json",
+
+    Authorization:`${Bearer} ${Authorization}`,
+
+  },
+
+};
+
 // Eye
 // ฟังก์ชันสำหรับการสร้าง Authorization Header
 const getAuthHeader = () => {
@@ -493,6 +509,18 @@ export const CreateReview = async (data: ReviewInterface): Promise<ReviewInterfa
   }
 };
 
+async function GetReviewsByID(id: number) { // edit
+
+  return await axios
+
+    .get(`${apiUrl}/review/${id}`, requestOptions)
+
+    .then((res) => res)
+
+    .catch((e) => e.response);
+
+}
+
 //update
 export const UpdateReview = async (id: number, data: ReviewInterface): Promise<ReviewInterface | false> => {
   try {
@@ -966,6 +994,8 @@ export {
   GetTutorProfileById,
   GetRecentTransactions,
   GetLoginHistoryByUserId,
+  //Tawun
+  GetReviewsByID,
   //Course Pond
   GetCourses,
   GetCoursesByPriceASC,

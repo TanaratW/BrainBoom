@@ -80,6 +80,7 @@ func main() {
 		router.DELETE("/reviews/unlike", like.UnlikeReview)
 		router.GET("/reviews/:userID/:reviewID/like", like.CheckUserLikeStatus)
 		router.PATCH("/reviews/:id", reviews.UpdateReview)
+		router.GET("/review/:id",reviews.GetReviews)
 
 		//Admin By Pai
 		router.GET("/tasks", tasks.ListTasks)
