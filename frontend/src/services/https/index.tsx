@@ -684,6 +684,112 @@ async function GetTotalCourse() {
   return res;
 }
 
+async function GetTotalTutor() {
+  const requestOptions = {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+
+  const res = await fetch(`${apiUrl}/tutor-count`, requestOptions) // เปลี่ยนเป็น endpoint สำหรับนับ Tutor
+    .then((res) => {
+      if (res.status === 200) {
+        return res.json(); // คืนค่าข้อมูล JSON ถ้าสถานะเป็น 200
+      } else {
+        return false; // คืนค่า false ถ้าเกิดข้อผิดพลาด
+      }
+    });
+
+  return res; // คืนค่าผลลัพธ์ที่ได้
+}
+async function GetTotalStudent() {
+  const requestOptions = {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+
+  const res = await fetch(`${apiUrl}/student-count`, requestOptions) // เปลี่ยนเป็น endpoint สำหรับนับ Tutor
+    .then((res) => {
+      if (res.status === 200) {
+        return res.json(); // คืนค่าข้อมูล JSON ถ้าสถานะเป็น 200
+      } else {
+        return false; // คืนค่า false ถ้าเกิดข้อผิดพลาด
+      }
+    });
+
+  return res; // คืนค่าผลลัพธ์ที่ได้
+}
+async function GetTotalPaid() {
+  const requestOptions = {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+
+  const res = await fetch(`${apiUrl}/total-paid`, requestOptions).then((res) => {
+    if (res.status == 200) {
+      return res.json();
+    } else {
+      return false;
+    }
+  });
+
+  return res;
+}
+async function GetRecentTransactions() {
+  const requestOptions = {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+
+  const res = await fetch(`${apiUrl}/recent-paid`, requestOptions).then((res) => {
+    if (res.status == 200) {
+      return res.json();
+    } else {
+      return false;
+    }
+  });
+
+  return res;
+}
+
+async function GetDataGraph() {
+  const requestOptions = {
+    method: "GET",
+  };
+
+  const res = await fetch(`${apiUrl}/courses-graph`, requestOptions).then(
+    (res) => {
+      if (res.status == 200) {
+        return res.json();
+      } else {
+        return false;
+      }
+    }
+  );
+
+  return res;
+}
+
+
+async function CreateUserByAdmin(data: UsersInterface) {
+  return await axios
+    .post(`${apiUrl}/create-user`, data, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: getAuthHeader(), // ส่ง Authorization Header ในคำขอ
+      },
+    })
+    .then((res) => res)
+    .catch((e) => e.response);
+}
+
 // Payment By Max ตะวันใช้ดึงข้อมูล user มารีวิว in MyCourse
 async function GetPaymentByIdUser(userID: number): Promise<any> {
   const requestOptions = {
@@ -831,6 +937,7 @@ export {
   GetLoginHistory,
   AddLoginHistory,
   GetTutorProfileById,
+  GetRecentTransactions,
   //Course Pond
   GetCourses,
   GetCoursesByPriceASC,
@@ -845,6 +952,11 @@ export {
   DeleteCourseByID,
   //Admin Pai
   GetTotalCourse,
+  GetTotalTutor,
+  GetTotalStudent,
+  GetTotalPaid,
+  GetDataGraph,
+  CreateUserByAdmin,
   //Payment Mac
   GetPaymentByIdUser, // ตะวันใช้ get ข้อมูลลง mycourse
   GetPaymentByIdCourse,

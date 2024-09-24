@@ -82,12 +82,18 @@ func main() {
 
 		//Admin By Pai
 		router.GET("/tasks", tasks.ListTasks)
-		router.GET("/tasks/:id", tasks.GetTaskById)
-		router.POST("/tasks", tasks.CreateTask)
-		router.PUT("/tasks/:id", tasks.UpdateTask)
-		router.DELETE("/tasks/:id", tasks.DeleteTask)
+        router.GET("/tasks/:id", tasks.GetTaskById)
+        router.POST("/tasks", tasks.CreateTask)
+        router.PUT("/tasks/:id", tasks.UpdateTask)
+        router.DELETE("/tasks/:id", tasks.DeleteTask)
 		router.GET("/course", course.ListCourse)
-		router.GET("/course-count", course.CountCourses)
+        router.GET("/course-count", course.CountCourses)
+		router.GET("/tutor-count",users.GetUserForTutor)
+		router.GET("/student-count", users.GetUserForStudent)
+		router.GET("/total-paid",payment.GetTotalPaid)
+		router.GET("/recent-paid",payment.GetRecentTransactions)
+		router.GET("/courses-graph", course.GetGraphData)
+		router.POST("/create-user",users.CreateUserByAdmin)
 
 		//Payment By Mac
 		r.GET("/payments/user/:userID", payment.GetPaymentByIdUser) // ตะวันใช้เรียกดู user in MyCourse
