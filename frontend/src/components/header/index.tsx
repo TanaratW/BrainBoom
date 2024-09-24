@@ -157,6 +157,7 @@ function HeaderComponent() {
           width:'200px',
           maxWidth:'200px',
           gap: '10px',
+          cursor: 'pointer',
         }}
         onClick={() => handleUserPrufileClick()}
       >
