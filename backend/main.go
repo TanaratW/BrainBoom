@@ -79,6 +79,7 @@ func main() {
 		router.POST("/reviews/like", like.LikeReview)
 		router.DELETE("/reviews/unlike", like.UnlikeReview)
 		router.GET("/reviews/:userID/:reviewID/like", like.CheckUserLikeStatus)
+		router.PATCH("/reviews/:id", reviews.UpdateReview)
 
 		//Admin By Pai
 		router.GET("/tasks", tasks.ListTasks)
