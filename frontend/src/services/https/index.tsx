@@ -493,6 +493,23 @@ export const CreateReview = async (data: ReviewInterface): Promise<ReviewInterfa
   }
 };
 
+//update
+export const UpdateReview = async (id: number, data: ReviewInterface): Promise<ReviewInterface | false> => {
+  try {
+    const response = await fetch(`${apiUrl}/reviews/${id}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    });
+
+    if (response.status !== 200) throw new Error('การตอบสนองของเครือข่ายไม่ถูกต้อง');
+    return await response.json();
+  } catch (error) {
+    console.error('ข้อผิดพลาดในการอัปเดตรีวิว:', error);
+    return false;
+  }
+};
+
 // รายการรีวิวทั้งหมด
 export const ListReview = async (): Promise<ReviewInterface[] | false> => {
   try {
