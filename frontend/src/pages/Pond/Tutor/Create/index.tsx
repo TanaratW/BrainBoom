@@ -134,7 +134,6 @@ function Create() {
       console.error('Error creating course:', error);
       messageApi.error('เกิดข้อผิดพลาดในการสร้างหลักสูตร');
   }
-  
   };
 
   return (

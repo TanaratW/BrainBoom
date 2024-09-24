@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
-import { Layout, Avatar, ConfigProvider, MenuProps, Menu, message, Modal } from 'antd';
-import { BookOutlined, UserOutlined, ShoppingCartOutlined, ShopOutlined, LogoutOutlined, SearchOutlined } from '@ant-design/icons';
+import { Layout, ConfigProvider, MenuProps, Menu, message, Modal } from 'antd';
+import { BookOutlined, ShoppingCartOutlined, ShopOutlined, LogoutOutlined, SearchOutlined } from '@ant-design/icons';
 import Logo from '../../assets/Logo.png';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import 'antd/dist/reset.css';
@@ -11,7 +11,6 @@ const { Header } = Layout;
 
 function HeaderComponent() {
   const username = localStorage.getItem('username') || 'Unknown User';
-  //const userID = localStorage.getItem('id') || 0;
   
   const [current, setCurrent] = useState("course");
   const navigate = useNavigate();
@@ -169,7 +168,11 @@ function HeaderComponent() {
         >
           {username}
         </div>
-        <Avatar size={45} icon={<UserOutlined />} />
+        <img
+          src={Logo}
+          alt="Profile"
+          style={{ width: '45px', height: '45px', borderRadius: '50%'}}
+        />
       </div>
       <ConfigProvider
         theme={{
