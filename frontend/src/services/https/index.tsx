@@ -83,6 +83,18 @@ async function GetUserById(id: string) {
     .catch((e) => e.response);
 }
 
+async function GetUserByTutorId(id: string) {
+  return await axios
+    .get(`${apiUrl}/users/tutor/${id}`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: getAuthHeader(), // ส่ง Authorization Header ในคำขอ
+      },
+    })
+    .then((res) => res)
+    .catch((e) => e.response);
+}
+
 // อัปเดตข้อมูลผู้ใช้ตาม ID
 async function UpdateUserById(id: string, data: UsersInterface) {
   return await axios
@@ -566,8 +578,7 @@ export const GetReviewById = async (id: number): Promise<ReviewInterface[]> => {
       if (!response.ok) throw new Error('การตอบสนองของเครือข่ายไม่ถูกต้อง');
       const data = await response.json();
       return Array.isArray(data) ? data : []; // ตรวจสอบให้แน่ใจว่าคืนค่าเป็นอาร์เรย์
-  } catch (error) {
-      console.error('ข้อผิดพลาดในการดึงรีวิวตาม ID:', error);
+  } catch {
       return [];
   }
 };
@@ -591,8 +602,7 @@ export const GetFilteredReviews = async (starLevel: string, courseID?: number): 
       if (response.status === 204) return [];
       if (!response.ok) throw new Error('การตอบสนองของเครือข่ายไม่ถูกต้อง');
       return await response.json();
-  } catch (error) {
-      console.error('ข้อผิดพลาดในการดึงรีวิวที่กรอง:', error);
+  } catch {
       return false;
   }
 };
@@ -880,7 +890,7 @@ async function GetPaymentByIdCourse(courseID: number): Promise<PaymentsInterface
       "Content-Type": "application/json",
     },
   };
-
+  
   try {
     const res = await fetch(`${apiUrl}/payments/courses/${courseID}`, requestOptions);
     if (res.status === 200) {
@@ -1009,6 +1019,7 @@ export {
   SignIn,
   GetUsers,
   GetUserById,
+  GetUserByTutorId,
   UpdateUserById,
   DeleteUserById,
   CreateUser,

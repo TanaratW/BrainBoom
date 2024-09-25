@@ -2,36 +2,30 @@ import React, { useState, useEffect } from "react";
 import HeaderComponent from "../../../components/header";
 import Modal from "./CreateReview/Pop_Up";
 import ModalEdit from "./EditReview/EditReview";
-import { GetReviewById, GetPaymentByIdUser } from "../../../services/https";
+import { GetReviewById, GetPaymentByIdUser, GetUserByTutorId } from "../../../services/https";
 import { Card, message } from "antd";
 import { PaymentsReviewInterface } from "../../../interfaces/IPayment";
 import { useNavigate } from "react-router-dom";
 import "./popup.css";
 import { CourseInterface } from "../../../interfaces/ICourse";
+import { UsersInterface } from "../../../interfaces/IUser";
 
 const Review: React.FC = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [isEditOpen, setIsEditOpen] = useState<boolean>(false); // สถานะใหม่สำหรับโมดัลที่สอง
+  const [isEditOpen, setIsEditOpen] = useState<boolean>(false);
   const [currentCourseId, setCurrentCourseId] = useState<number | null>(null);
-  const [currentReviewId, setCurrentReviewId] = useState<number | null>(null); // เก็บ reviewId
-  const [hasReviewed, setHasReviewed] = useState<{ [key: number]: boolean }>(
-    {}
-  );
+  const [currentReviewId, setCurrentReviewId] = useState<number | null>(null);
+  const [hasReviewed, setHasReviewed] = useState<{ [key: number]: boolean }>({});
   const [payments, setPayments] = useState<PaymentsReviewInterface[]>([]);
   const [messageApi, contextHolder] = message.useMessage();
-  const [uid, setUid] = useState<number>(
-    Number(localStorage.getItem("id")) || 0
-  );
-
+  const [uid, setUid] = useState<number>(Number(localStorage.getItem("id")) || 0);
   const navigate = useNavigate();
+  const [user, setUser] = useState<UsersInterface>();
 
-  console.log(messageApi);
-  
   useEffect(() => {
     setUid(Number(localStorage.getItem("id")));
     const fetchAllReviewsAndPayments = async () => {
       const reviewStatus: { [key: number]: boolean } = {};
-
       const paymentsData = await GetPaymentByIdUser(uid);
 
       if (!paymentsData || paymentsData.length === 0) return;
@@ -53,19 +47,13 @@ const Review: React.FC = () => {
     navigate(`/course/${course.ID}`, { state: { course } });
   };
 
-
   const openModal = async (id: number) => {
     if (hasReviewed[id]) {
       setCurrentCourseId(id);
-      setIsEditOpen(true); 
+      setIsEditOpen(true);
       const reviews = await GetReviewById(id);
       const userReview = reviews.find((review) => review.UserID === uid);
-      if (userReview && userReview.ID !== undefined) {
-        console.log("reviewId:", userReview.ID);
-        setCurrentReviewId(userReview.ID);
-      } else {
-        setCurrentReviewId(null); 
-      }
+      setCurrentReviewId(userReview?.ID || null);
       return;
     }
     setCurrentCourseId(id);
@@ -78,6 +66,26 @@ const Review: React.FC = () => {
       [courseId]: true,
     }));
   };
+
+  const getUser = async (tutorProfileID: string) => {
+    try {
+      const UserData = await GetUserByTutorId(tutorProfileID);
+      setUser(UserData.data);
+    } catch (error) {
+      console.error(`Unknown User`, error);
+    }
+  };
+
+  useEffect(() => {
+    if (payments.length > 0 && !user) {
+      const tutorProfileID = payments[0].Course.TutorProfileID;
+      if (tutorProfileID !== undefined) {
+        getUser(tutorProfileID.toString());
+      } else {
+        messageApi.error('ไม่สามารถดำเนินการได้');
+      }
+    }
+  }, [payments, user, messageApi]);
 
   return (
     <>
@@ -92,15 +100,15 @@ const Review: React.FC = () => {
         <div className="review-layer">
           {payments.map((payment, index) => (
             <Card key={index} className="product-review">     
-                <img
-                  src={payment.Course.ProfilePicture}
-                  alt={`${payment.Course.Title} Course`}
-                  onClick= {() => handleCourseClick(payment.Course)}
-                />
-              <p className="text-product">
+              <img
+                src={payment.Course.ProfilePicture}
+                alt={`${payment.Course.Title} Course`}
+                onClick={() => handleCourseClick(payment.Course)}
+              />
+              <div className="text-product">
                 <strong>ชื่อ : {payment.Course.Title}</strong>
                 <br />
-                Tutor ID : {payment.Course.TutorProfileID}
+                Tutor ID : {user?.Username}
                 <div className="button-open">
                   {hasReviewed[payment.CourseID!] ? (
                     <button
@@ -126,20 +134,18 @@ const Review: React.FC = () => {
                       onReviewSubmit={handleReviewSubmit}
                     />
                   )}
-                  {currentCourseId === payment.CourseID &&
-                    isEditOpen &&
-                    currentReviewId !== null && (
-                      <ModalEdit
-                        open={isEditOpen}
-                        onClose={() => setIsEditOpen(false)} // ปิดโมดัลที่สอง
-                        CourseID={currentCourseId!}
-                        UserID={uid}
-                        onReviewSubmit={handleReviewSubmit}
-                        reviewId={currentReviewId} // ส่ง ID ของรีวิวที่มีอยู่
-                      />
-                    )}
+                  {currentCourseId === payment.CourseID && isEditOpen && currentReviewId !== null && (
+                    <ModalEdit
+                      open={isEditOpen}
+                      onClose={() => setIsEditOpen(false)}
+                      CourseID={currentCourseId!}
+                      UserID={uid}
+                      onReviewSubmit={handleReviewSubmit}
+                      reviewId={currentReviewId}
+                    />
+                  )}
                 </div>
-              </p>
+              </div>
             </Card>
           ))}
         </div>

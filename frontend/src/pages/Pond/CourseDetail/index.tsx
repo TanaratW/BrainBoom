@@ -5,7 +5,8 @@ import HeaderComponent from '../../../components/header';
 import moment from 'moment';
 import Example_Review from './Model/Example_Review';
 import ModalTest from "./Model/Model"; 
-import { GetPaymentByIdCourseAndIdUser } from '../../../services/https';
+import { GetPaymentByIdCourseAndIdUser, GetUserByTutorId } from '../../../services/https';
+import { UsersInterface } from '../../../interfaces/IUser';
 
 const { Title, Text } = Typography;
 
@@ -21,6 +22,8 @@ function CourseDetail() {
   const updatedAt = course.UpdatedAt;
   const formattedDate = moment(updatedAt).format('DD MMMM YYYY');
   const formattedTime = moment(updatedAt).format('HH:mm');
+
+  const [user, setUser] = useState<UsersInterface>();
 
   const showModal = () => {
       setIsModalVisible(true);
@@ -45,6 +48,26 @@ function CourseDetail() {
       CheackPayment(course.ID); 
     }
   });
+
+  const getUser = async (tutorProfileID: string) => {
+    try {
+        const UserData = await GetUserByTutorId(tutorProfileID);
+        setUser(UserData.data);
+    } catch (error) {
+        console.error(`Unknown User`, error);
+    }
+};
+  
+
+useEffect(() => {
+  
+  if (!user) {
+      const tutorProfileID = course.TutorProfileID;
+      if (tutorProfileID !== undefined) {
+          getUser(tutorProfileID.toString());
+      }
+  }
+}, [course, user]);
   
 
   
@@ -102,7 +125,7 @@ function CourseDetail() {
                       borderRadius: '10px',
                       objectFit: 'cover',
                       width: '100%',
-                      height: '300px',
+                      height: '250px',
                       padding: '10px',
                     }}
                   />
@@ -116,7 +139,7 @@ function CourseDetail() {
                 }}
                 styles={{body: { padding: '10px 25px' }}}
               >
-                <Text type="secondary">Created by: {course.TutorProfileID || "Unknown"}</Text>
+                <Text type="secondary">Created by: {user?.Username|| "Unknown"}</Text>
                 <br />
                 <Text type="secondary">Updated: {formattedDate} {formattedTime || "N/A"}</Text>
               </Card>

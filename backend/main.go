@@ -41,6 +41,7 @@ func main() {
 		r.PUT("/users/:id", users.Update)
 		r.GET("/users", users.GetAll)
 		r.GET("/users/:id", users.GetUserById)
+		r.GET("/users/tutor/:id", users.GetUserByTutorId)
 		r.DELETE("/users/:id", users.Delete)
 		r.PUT("/users/password/:id", users.ChangePassword)
 
