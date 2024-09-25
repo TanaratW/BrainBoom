@@ -888,6 +888,34 @@ async function GetPaymentByIdUser(userID: number): Promise<any> {
   }
 }
 
+async function GetPaymentByIdCourse(courseID: number): Promise<PaymentsInterface[] | null | false> {
+  const requestOptions = {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+  
+  try {
+    const res = await fetch(`${apiUrl}/payments/courses/${courseID}`, requestOptions);
+    if (res.status === 200) {
+      const payments = await res.json();
+    
+      if (Array.isArray(payments)) {
+        return payments as PaymentsInterface[]; 
+      } else {
+        return false;
+      }
+    } else if (res.status === 404) {
+      return null;
+    } else {
+      return false;
+    }
+  } catch {
+    return false;
+  }
+}
+
 async function GetPayments() {
   const requestOptions = {
     method: "GET",
@@ -1002,6 +1030,33 @@ async function CreatePromptPay(data: PromptPayInterface) {
   return res;
 }
 
+async function GetPaymentByIdCourseAndIdUser(courseID: number, userID: number): Promise<PaymentsInterface[] | null | false> {
+  const requestOptions = {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+
+  try {
+    const res = await fetch(`${apiUrl}/payments/courses/${courseID}/${userID}`, requestOptions);
+    if (res.status === 200) {
+      const payments = await res.json();
+    
+      if (Array.isArray(payments)) {
+        return payments as PaymentsInterface[]; 
+      } else {
+        return false;
+      }
+    } else if (res.status === 404) {
+      return null;
+    } else {
+      return false;
+    }
+  } catch {
+    return false;
+  }
+}
 
 // Export ฟังก์ชันทั้งหมด
 export {
@@ -1064,4 +1119,6 @@ export {
   CreatePayment,
   CreateCreditCard,
   CreatePromptPay,
+  GetPaymentByIdCourseAndIdUser,
+  GetPaymentByIdCourse,
 };
