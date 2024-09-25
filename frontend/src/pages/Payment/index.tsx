@@ -129,7 +129,6 @@ function Payment() {
 
   const [promptpayData, setPromptpayData] = useState<PromptPayInterface>({
     UserID: user_id,
-    PhoneNumber: "",
   });
 
   const [paymentData, setPaymentData] = useState<PaymentsInterface>({
