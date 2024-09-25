@@ -47,16 +47,18 @@ function HeaderComponent() {
   const getUser = async () => {
     try {
       const UserData = await GetUserById(userID);
-        setUser(UserData);
+        setUser(UserData.data);
+        
+        
     } catch (error) {
         console.error(`Unknow User`, error);
     }
   };
   
   useEffect(() => {
-    if (user) {
-      getUser(); 
-    }
+    if(!(user?.Profile)){
+      getUser();
+    } 
   });
   
 
