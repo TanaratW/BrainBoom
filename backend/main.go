@@ -112,6 +112,8 @@ func main() {
 		router.POST("/credit-card", creditcard.CreateCreditCard) // 1
 		router.POST("/prompt-pay", promptpay.CreatePromptPay) // 2
 		router.POST("/payment", payment.CreatePayment) // 3
+		r.GET("/payments/courses/:courseID", payment.GetPaymentByIDCourse)
+		r.GET("/payments/courses/:courseID/:userID", payment.GetPaymentByIDCourseAndIDUser)
 	}
 
 	r.GET("/", func(c *gin.Context) {

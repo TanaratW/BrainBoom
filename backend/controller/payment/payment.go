@@ -9,6 +9,43 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+func GetPaymentByIDCourse(c *gin.Context) { // ปอนด์
+	courseId := c.Param("courseID")
+
+	var payments []entity.Payments
+	db := config.DB()
+
+	if err := db.Preload("User").Preload("Course").Where("course_id = ?", courseId).Find(&payments).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	if len(payments) == 0 {
+		c.JSON(http.StatusNotFound, gin.H{"message": "ไม่พบการชำระเงินสำหรับผู้ใช้ที่ระบุ"})
+		return
+	}
+	c.JSON(http.StatusOK, payments)
+}
+
+func GetPaymentByIDCourseAndIDUser(c *gin.Context) {
+    courseId := c.Param("courseID")
+    userId := c.Param("userID")
+
+    var payments []entity.Payments
+    db := config.DB()
+	
+    if err := db.Preload("User").Preload("Course").Where("course_id = ? AND user_id = ?", courseId, userId).Find(&payments).Error; err != nil {
+        c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+        return
+    }
+
+    if len(payments) == 0 {
+        c.JSON(http.StatusNotFound, gin.H{"message": "ไม่พบการชำระเงินสำหรับผู้ใช้ที่ระบุ"})
+        return
+    }
+    c.JSON(http.StatusOK, payments)
+}
+
 func GetPaymentByIdUser(c *gin.Context) { // ตะวันใช้ดึงข้อมูลเข้า MyCourse (คอร์สของฉัน)
 	userID := c.Param("userID")
 
