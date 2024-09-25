@@ -1036,42 +1036,6 @@ async function GetPayments() {
   return res;
 }
 
-async function GetPriceById(id: number | undefined) {
-  const requestOptions = {
-    method: "GET",
-  };
-
-  const res = await fetch(`${apiUrl}/course-price/${id}`, requestOptions).then(
-    (res) => {
-      if (res.status == 200) {
-        return res.json();
-      } else {
-        return false;
-      }
-    }
-  );
-
-  return res;
-}
-
-async function GetTitleById(id: number | undefined) {
-  const requestOptions = {
-    method: "GET",
-  };
-
-  const res = await fetch(`${apiUrl}/course-title/${id}`, requestOptions).then(
-    (res) => {
-      if (res.status == 200) {
-        return res.json();
-      } else {
-        return false;
-      }
-    }
-  );
-
-  return res;
-}
-
 async function CreatePayment(data: PaymentsInterface) {
   const requestOptions = {
     method: "POST",
