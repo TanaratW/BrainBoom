@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
 import HeaderComponent from "../../../components/header";
 import Modal from "./CreateReview/Pop_Up";
-import ModalEdit from "./EditReview/EditReview"; // นำเข้าโมดัลที่สอง
+import ModalEdit from "./EditReview/EditReview";
 import { GetReviewById, GetPaymentByIdUser } from "../../../services/https";
 import { Card, message } from "antd";
 import { PaymentsReviewInterface } from "../../../interfaces/IPayment";
+import { Link, Navigate } from "react-router-dom";
 import "./popup.css";
 
 const Review: React.FC = () => {
@@ -12,16 +13,20 @@ const Review: React.FC = () => {
   const [isEditOpen, setIsEditOpen] = useState<boolean>(false); // สถานะใหม่สำหรับโมดัลที่สอง
   const [currentCourseId, setCurrentCourseId] = useState<number | null>(null);
   const [currentReviewId, setCurrentReviewId] = useState<number | null>(null); // เก็บ reviewId
-  const [hasReviewed, setHasReviewed] = useState<{ [key: number]: boolean }>({});
+  const [hasReviewed, setHasReviewed] = useState<{ [key: number]: boolean }>(
+    {}
+  );
   const [payments, setPayments] = useState<PaymentsReviewInterface[]>([]);
   const [messageApi, contextHolder] = message.useMessage();
-  const [uid, setUid] = useState<number>(Number(localStorage.getItem("id")) || 0);
+  const [uid, setUid] = useState<number>(
+    Number(localStorage.getItem("id")) || 0
+  );
 
   useEffect(() => {
     setUid(Number(localStorage.getItem("id")));
     const fetchAllReviewsAndPayments = async () => {
       const reviewStatus: { [key: number]: boolean } = {};
-      
+
       const paymentsData = await GetPaymentByIdUser(uid);
 
       if (!paymentsData || paymentsData.length === 0) return;
@@ -77,10 +82,12 @@ const Review: React.FC = () => {
         <div className="review-layer">
           {payments.map((payment, index) => (
             <Card key={index} className="product-review">
-              <img
-                src={payment.Course.ProfilePicture}
-                alt={`${payment.Course.Title} Course`}
-              />
+              <Link to={`/course/${payment.CourseID}`}>
+                <img
+                  src={payment.Course.ProfilePicture}
+                  alt={`${payment.Course.Title} Course`}
+                />
+              </Link>
               <p className="text-product">
                 <strong>ชื่อ : {payment.Course.Title}</strong>
                 <br />
@@ -89,7 +96,7 @@ const Review: React.FC = () => {
                   {hasReviewed[payment.CourseID!] ? (
                     <button
                       className="button-open-model"
-                      onClick={() => openModal(payment.CourseID!)} 
+                      onClick={() => openModal(payment.CourseID!)}
                     >
                       Edit Review
                     </button>
@@ -110,16 +117,18 @@ const Review: React.FC = () => {
                       onReviewSubmit={handleReviewSubmit}
                     />
                   )}
-                  {currentCourseId === payment.CourseID && isEditOpen && currentReviewId !== null && (
-                    <ModalEdit
-                      open={isEditOpen}
-                      onClose={() => setIsEditOpen(false)} // ปิดโมดัลที่สอง
-                      CourseID={currentCourseId!}
-                      UserID={uid}
-                      onReviewSubmit={handleReviewSubmit}
-                      reviewId={currentReviewId} // ส่ง ID ของรีวิวที่มีอยู่
-                    />
-                  )}
+                  {currentCourseId === payment.CourseID &&
+                    isEditOpen &&
+                    currentReviewId !== null && (
+                      <ModalEdit
+                        open={isEditOpen}
+                        onClose={() => setIsEditOpen(false)} // ปิดโมดัลที่สอง
+                        CourseID={currentCourseId!}
+                        UserID={uid}
+                        onReviewSubmit={handleReviewSubmit}
+                        reviewId={currentReviewId} // ส่ง ID ของรีวิวที่มีอยู่
+                      />
+                    )}
                 </div>
               </p>
             </Card>
