@@ -3,8 +3,8 @@ import React, { useState } from "react";
 import { BsBook } from "react-icons/bs";
 import { BsSearch } from "react-icons/bs";
 import { Rate } from "antd";
-import Header from "../../Pai/ADD/Header";
-import HeaderandSidebar from "../../Pai/ADD/Sidebar";
+import Header from "../ADD/Header";
+import HeaderandSidebar from "../ADD/Sidebar";
 import "../Dashboard/apptest.css"
 
 const Tutor: React.FC = () => {

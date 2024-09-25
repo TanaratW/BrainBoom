@@ -1,10 +1,10 @@
 import { Box, Button, TextField, MenuItem } from "@mui/material";
 import { Formik, FormikHelpers } from "formik";
 import * as yup from "yup";
-import Header from "../../../components/Pai/Header";
+import Header from "../../../components/Chart/Header";
 import { useState } from "react";
-import HeaderandSidebar from "../../Pai/ADD/Header";
-import Sidebar from "../../Pai/ADD/Sidebar";
+import HeaderandSidebar from "../ADD/Header";
+import Sidebar from "../ADD/Sidebar";
 import "../Dashboard/apptest.css";
 import { CreateUserByAdmin } from "../../../services/https";
 import { UsersInterface } from "../../../interfaces/IUser";

@@ -19,12 +19,12 @@ import {
   Typography,
   useTheme,
 } from "@mui/material";
-import Header from "../../../components/Pai/Header";
+import Header from "../../../components/Chart/Header";
 import { tokens } from "../../../theme";
 import React from "react";
 import { Button, notification } from "antd";
-import Headerside from "../../Pai/ADD/Header";
-import HeaderandSidebar from "../../Pai/ADD/Sidebar";
+import Headerside from "../ADD/Header";
+import HeaderandSidebar from "../ADD/Sidebar";
 import "../Dashboard/apptest.css"
 
 const Calendar = () => {
