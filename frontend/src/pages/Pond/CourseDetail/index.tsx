@@ -44,7 +44,7 @@ function CourseDetail() {
     if (course.ID) {
       CheackPayment(course.ID); 
     }
-  }); 
+  });
   
 
   

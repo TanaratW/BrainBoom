@@ -72,6 +72,7 @@ function Course() {
     }
   };
 
+
   useEffect(() => {
     getCourses();
     getCategories();

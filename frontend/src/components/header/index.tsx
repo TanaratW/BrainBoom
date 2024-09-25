@@ -4,6 +4,8 @@ import { BookOutlined, ShoppingCartOutlined, ShopOutlined, LogoutOutlined, Searc
 import Logo from '../../assets/Logo.png';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import 'antd/dist/reset.css';
+import { UsersInterface } from '../../interfaces/IUser';
+import { GetUserById } from '../../services/https';
 
 type MenuItem = Required<MenuProps>['items'][number];
 
@@ -11,10 +13,13 @@ const { Header } = Layout;
 
 function HeaderComponent() {
   const username = localStorage.getItem('username') || 'Unknown User';
+  const userID = localStorage.getItem('id') || '0' ;
+  const [user, setUser] = useState<UsersInterface>();
   
   const [current, setCurrent] = useState("course");
   const navigate = useNavigate();
   const location = useLocation();
+  
 
   const roleID = localStorage.getItem('user_role_id') || 0;
 
@@ -37,6 +42,22 @@ function HeaderComponent() {
       navigate("/tutor");
     }
   }
+
+  const getUser = async () => {
+    try {
+      const UserData = await GetUserById(userID);
+        setUser(UserData);
+    } catch (error) {
+        console.error(`Unknow User`, error);
+    }
+  };
+  
+  useEffect(() => {
+    if (user) {
+      getUser(); 
+    }
+  });
+  
 
   const items: MenuItem[] = [
     {
@@ -170,7 +191,7 @@ function HeaderComponent() {
           {username}
         </div>
         <img
-          src={Logo}
+          src={user?.Profile}
           alt="Profile"
           style={{ width: '45px', height: '45px', borderRadius: '50%'}}
         />
