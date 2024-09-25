@@ -61,8 +61,8 @@ const Review: React.FC = () => {
       const reviews = await GetReviewById(id);
       const userReview = reviews.find((review) => review.UserID === uid);
       if (userReview && userReview.ID !== undefined) {
-        console.log("reviewId:", userReview.ID); 
-        setCurrentReviewId(userReview.ID); 
+        console.log("reviewId:", userReview.ID);
+        setCurrentReviewId(userReview.ID);
       } else {
         setCurrentReviewId(null); 
       }
