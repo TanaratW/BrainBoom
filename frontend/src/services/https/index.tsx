@@ -892,8 +892,6 @@ async function GetDataGraph() {
   return res;
 }
 
-async function CreateUserByAdmin(data: UsersInterface) {
-
 //--Update--
 async function CreateUserByAdmin(userData: UsersInterface) {
   try {
@@ -911,9 +909,16 @@ async function CreateUserByAdmin(userData: UsersInterface) {
     // แสดงข้อมูลข้อผิดพลาดเพิ่มเติม
     if (axios.isAxiosError(error)) {
       console.error("Axios error details:", error.response?.data);
-      return { success: false, message: error.response?.data?.message || "เกิดข้อผิดพลาดในการสร้างผู้ใช้" };
+      return {
+        success: false,
+        message:
+          error.response?.data?.message || "เกิดข้อผิดพลาดในการสร้างผู้ใช้",
+      };
     } else {
-      return { success: false, message: "เกิดข้อผิดพลาดในการเชื่อมต่อเซิร์ฟเวอร์" }; // ข้อความทั่วไป
+      return {
+        success: false,
+        message: "เกิดข้อผิดพลาดในการเชื่อมต่อเซิร์ฟเวอร์",
+      }; // ข้อความทั่วไป
     }
   }
 }
@@ -1032,6 +1037,42 @@ async function GetPayments() {
       return false;
     }
   });
+
+  return res;
+}
+
+async function GetPriceById(id: number | undefined) {
+  const requestOptions = {
+    method: "GET",
+  };
+
+  const res = await fetch(`${apiUrl}/course-price/${id}`, requestOptions).then(
+    (res) => {
+      if (res.status == 200) {
+        return res.json();
+      } else {
+        return false;
+      }
+    }
+  );
+
+  return res;
+}
+
+async function GetTitleById(id: number | undefined) {
+  const requestOptions = {
+    method: "GET",
+  };
+
+  const res = await fetch(`${apiUrl}/course-title/${id}`, requestOptions).then(
+    (res) => {
+      if (res.status == 200) {
+        return res.json();
+      } else {
+        return false;
+      }
+    }
+  );
 
   return res;
 }
