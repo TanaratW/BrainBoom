@@ -129,6 +129,7 @@ function Payment() {
 
   const [promptpayData, setPromptpayData] = useState<PromptPayInterface>({
     UserID: user_id,
+    PromptPayNumber: "",
   });
 
   const [paymentData, setPaymentData] = useState<PaymentsInterface>({
