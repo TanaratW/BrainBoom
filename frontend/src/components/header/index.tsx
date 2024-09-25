@@ -6,6 +6,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import 'antd/dist/reset.css';
 import { UsersInterface } from '../../interfaces/IUser';
 import { GetUserById } from '../../services/https';
+import studentpic from '../../assets/tutorpic.png';
 
 type MenuItem = Required<MenuProps>['items'][number];
 
@@ -191,7 +192,7 @@ function HeaderComponent() {
           {username}
         </div>
         <img
-          src={user?.Profile}
+          src={user?.Profile ? user?.Profile : studentpic}
           alt="Profile"
           style={{ width: '45px', height: '45px', borderRadius: '50%'}}
         />
