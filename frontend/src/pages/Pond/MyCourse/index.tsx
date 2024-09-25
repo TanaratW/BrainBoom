@@ -5,8 +5,9 @@ import ModalEdit from "./EditReview/EditReview";
 import { GetReviewById, GetPaymentByIdUser } from "../../../services/https";
 import { Card, message } from "antd";
 import { PaymentsReviewInterface } from "../../../interfaces/IPayment";
-import { Link, Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "./popup.css";
+import { CourseInterface } from "../../../interfaces/ICourse";
 
 const Review: React.FC = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -22,6 +23,10 @@ const Review: React.FC = () => {
     Number(localStorage.getItem("id")) || 0
   );
 
+  const navigate = useNavigate();
+
+  console.log(messageApi);
+  
   useEffect(() => {
     setUid(Number(localStorage.getItem("id")));
     const fetchAllReviewsAndPayments = async () => {
@@ -44,17 +49,22 @@ const Review: React.FC = () => {
     fetchAllReviewsAndPayments();
   }, [uid]);
 
+  const handleCourseClick = (course: CourseInterface) => {
+    navigate(`/course/${course.ID}`, { state: { course } });
+  };
+
+
   const openModal = async (id: number) => {
     if (hasReviewed[id]) {
       setCurrentCourseId(id);
-      setIsEditOpen(true); // เปิดโมดัลที่สองเมื่อมีการรีวิวแล้ว
-      const reviews = await GetReviewById(id); // ดึงข้อมูลรีวิวตาม CourseID
+      setIsEditOpen(true); 
+      const reviews = await GetReviewById(id);
       const userReview = reviews.find((review) => review.UserID === uid);
       if (userReview && userReview.ID !== undefined) {
-        console.log("reviewId:", userReview.ID); // แสดง reviewId ในคอนโซล
-        setCurrentReviewId(userReview.ID); // เก็บ reviewId ใน state
+        console.log("reviewId:", userReview.ID); 
+        setCurrentReviewId(userReview.ID); 
       } else {
-        setCurrentReviewId(null); // กำหนดเป็น null ถ้าไม่มี review
+        setCurrentReviewId(null); 
       }
       return;
     }
@@ -81,13 +91,12 @@ const Review: React.FC = () => {
       <div className="setcourse">
         <div className="review-layer">
           {payments.map((payment, index) => (
-            <Card key={index} className="product-review">
-              <Link to={`/course/${payment.CourseID}`}>
+            <Card key={index} className="product-review">     
                 <img
                   src={payment.Course.ProfilePicture}
                   alt={`${payment.Course.Title} Course`}
+                  onClick= {() => handleCourseClick(payment.Course)}
                 />
-              </Link>
               <p className="text-product">
                 <strong>ชื่อ : {payment.Course.Title}</strong>
                 <br />
