@@ -12,6 +12,9 @@ import (
 	"github.com/Parichatx/user-system2/controller/review"
 	"github.com/Parichatx/user-system2/controller/task"
 	"github.com/Parichatx/user-system2/controller/tutor_profiles"
+	"github.com/Parichatx/user-system2/controller/promptpay"
+	"github.com/Parichatx/user-system2/controller/creditcard"
+	"github.com/Parichatx/user-system2/controller/payment_method"
 	"github.com/Parichatx/user-system2/controller/users"
 	//"github.com/Parichatx/user-system2/middlewares"
 	"github.com/gin-gonic/gin"
@@ -99,13 +102,16 @@ func main() {
 		router.POST("/create-user",users.CreateUserByAdmin)
 
 		//Payment By Mac
-		r.GET("/payments/user/:userID", payment.GetPaymentByIdUser) // ตะวันใช้เรียกดู user in MyCourse
-		r.GET("/payments/courses/:courseID", payment.GetPaymentByIDCourse)
-		r.GET("/payments/courses/:courseID/:userID", payment.GetPaymentByIDCourseAndIDUser)
-		router.GET("/payments", payment.ListAllPayments)
+		router.GET("/payments/user/:userID", payment.GetPaymentByIdUser) // ตะวันใช้เรียกดู user in MyCourse 
+		router.GET("/payments", payment.ListPayments)
 		router.GET("/course-price/:id", payment.GetCoursePrice)
 		router.GET("/course-title/:id", payment.GetCourseName)
-		router.POST("/payment", payment.CreatePayment)
+		router.GET("/promptpays", promptpay.ListPromptPays)
+		router.GET("/creditcards", creditcard.ListCreditCards)
+		router.GET("/paymentmethods", paymentmethod.ListPaymentMethods)
+		router.POST("/credit-card", creditcard.CreateCreditCard) // 1
+		router.POST("/prompt-pay", promptpay.CreatePromptPay) // 2
+		router.POST("/payment", payment.CreatePayment) // 3
 	}
 
 	r.GET("/", func(c *gin.Context) {
